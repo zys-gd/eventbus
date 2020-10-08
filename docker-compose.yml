@@ -1,13 +1,12 @@
 version: '3.8'
 services:
     nodejs:
-        restart: always
-        build:
-            context: ""
-            dockerfile: .docker/nodejs/Dockerfile
-            target: development
+        restart: on-failure
+        image: library/node:14-alpine
         volumes:
-            - ./:/usr/src/app
+            - ./:/app
+        working_dir: /app
+        user: node
         ports:
             - "3000:3000"
         command: npm run start:dev
