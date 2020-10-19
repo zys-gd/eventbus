@@ -1,6 +1,7 @@
 version: '3.8'
 services:
-    nodejs:
+    node:
+        container_name: eventbus_node
         restart: on-failure
         image: library/node:14-alpine
         volumes:
@@ -10,8 +11,11 @@ services:
         ports:
             - "3000:3000"
         command: npm run start:dev
+        networks:
+            - eventbus
 
     mysql:
+        container_name: eventbus_mysql
         image: library/mysql:8
         volumes:
             - db:/var/lib/mysql
@@ -21,8 +25,16 @@ services:
             interval: 10s
             timeout: 10s
             retries: 5
+        environment:
+            - MYSQL_ROOT_PASSWORD
+            - MYSQL_DATABASE
+            - MYSQL_USER
+            - MYSQL_PASSWORD
+        networks:
+            - eventbus
 
     rabbitmq:
+        container_name: eventbus_rabbitmq
         image: library/rabbitmq:3
         restart: always
         hostname: eventbus-rmq
@@ -34,7 +46,7 @@ services:
             timeout: 10s
             retries: 5
         networks:
-            - b2c-stage
+            - eventbus
 
 volumes:
     rabbitmq:
