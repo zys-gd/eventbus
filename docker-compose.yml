@@ -10,3 +10,36 @@ services:
         ports:
             - "3000:3000"
         command: npm run start:dev
+
+    mysql:
+        image: library/mysql:8
+        volumes:
+            - db:/var/lib/mysql
+        restart: always
+        healthcheck:
+            test: mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} status >/dev/null 2>/dev/null
+            interval: 10s
+            timeout: 10s
+            retries: 5
+
+    rabbitmq:
+        image: library/rabbitmq:3
+        restart: always
+        hostname: eventbus-rmq
+        volumes:
+            - rabbitmq:/var/lib/rabbitmq/
+        healthcheck:
+            test: rabbitmq-diagnostics ping >/dev/null 2>/dev/null
+            interval: 10s
+            timeout: 10s
+            retries: 5
+        networks:
+            - b2c-stage
+
+volumes:
+    rabbitmq:
+    db:
+
+networks:
+    eventbus:
+        driver: bridge
