@@ -3,7 +3,7 @@ services:
     node:
         container_name: eventbus_node
         restart: on-failure
-        image: library/node:14-alpine
+        image: library/node:14
         volumes:
             - ./:/app
         working_dir: /app
