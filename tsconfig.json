@@ -18,6 +18,7 @@
         "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strict": true,
-        "alwaysStrict": true
+        "alwaysStrict": true,
+        "paths": {}
     }
 }
