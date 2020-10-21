@@ -2,26 +2,25 @@ import {Module} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {Connection} from 'typeorm';
+import {ConfigModule} from '@nestjs/config';
+import {AppConfigService} from "./app-config.service";
 
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'mysql',
-            host: '192.168.16.6',
-            port: 3306,
-            username: 'root',
-            password: '123123',
-            database: 'eventbus',
-            entities: [],
-            synchronize: true,
-        })
+        ConfigModule.forRoot(),
+        TypeOrmModule.forRootAsync({
+            imports: [
+                ConfigModule.forRoot(),
+                AppModule,
+            ],
+            inject: [AppConfigService],
+            useFactory: (config: AppConfigService) => config.dbConfig,
+        }),
     ],
     controllers: [AppController],
-    providers: [AppService]
+    providers: [AppService, AppConfigService],
+    exports: [AppConfigService],
 })
 
 export class AppModule {
-    constructor(private connection: Connection) {
-    }
 }
