@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-    node:
-        container_name: eventbus_node
+    node-app:
+        container_name: eventbus_node_app
         restart: on-failure
         image: library/node:14
         volumes:
@@ -10,7 +10,27 @@ services:
         user: node
         ports:
             - "3000:3000"
-        command: npm run start:dev
+        command: npm run start:api:dev
+        depends_on:
+            - mysql
+        networks:
+            - eventbus
+
+    node-consumer:
+        container_name: eventbus_node_consumer
+        restart: on-failure
+        image: library/node:14
+        volumes:
+            - ./:/app
+        working_dir: /app
+        user: node
+        command: >
+            bash -c "
+            sleep 5
+            && npm run start:consumer:dev
+            "
+        depends_on:
+            - rabbitmq
         networks:
             - eventbus
 
