@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-    node-app:
-        container_name: eventbus_node_app
+    node-api:
+        container_name: eventbus_node_api
         restart: on-failure
         image: library/node:14
         volumes:
