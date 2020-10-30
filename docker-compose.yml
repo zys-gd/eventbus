@@ -49,9 +49,9 @@ services:
             retries: 5
         environment:
             - MYSQL_ROOT_PASSWORD
-            - MYSQL_DATABASE
-            - MYSQL_USER
-            - MYSQL_PASSWORD
+            - MYSQL_DATABASE=${TYPEORM_DATABASE}
+            - MYSQL_USER=${TYPEORM_USERNAME}
+            - MYSQL_PASSWORD=${TYPEORM_PASSWORD}
         networks:
             - eventbus
 
