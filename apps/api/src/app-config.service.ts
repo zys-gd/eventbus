@@ -17,6 +17,16 @@ export class AppConfigService {
             port: this.config.get('MYSQL_PORT', 3306),
             debug: this.config.get('MYSQL_DEBUG') === 'true' ? ['ComQueryPacket'] : false,
             synchronize: true,
+            entities: [
+                "./entities/*entity.ts"
+            ],
+            migrations: [
+                "./migrations/*.ts"
+            ],
+            cli: {
+                entitiesDir: "entities",
+                migrationsDir: "migrations",
+            }
         };
     }
 }
