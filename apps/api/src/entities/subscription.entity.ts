@@ -1,11 +1,11 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { EventTypeEntity } from "./event-type.entity";
-import { SubscriberEntity } from "./subscriber.entity";
+import { EventTypeEntity } from './event-type.entity';
+import { SubscriberEntity } from './subscriber.entity';
 
 @Entity()
 export class SubscriptionEntity {
 
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryGeneratedColumn('uuid')
     uuid?: string;
 
     @Column() notificationUrl?: string;

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class InitialMigration1604053942583 implements MigrationInterface {
 
@@ -160,41 +160,41 @@ export class InitialMigration1604053942583 implements MigrationInterface {
             name: 'subscriptions',
         }));
 
-        await queryRunner.createForeignKey("subscriptions", new TableForeignKey({
-            columnNames: ["event_type_id"],
-            referencedColumnNames: ["uuid"],
-            referencedTableName: "event_types",
+        await queryRunner.createForeignKey('subscriptions', new TableForeignKey({
+            columnNames: ['event_type_id'],
+            referencedColumnNames: ['uuid'],
+            referencedTableName: 'event_types',
         }));
-        await queryRunner.createForeignKey("subscriptions", new TableForeignKey({
-            columnNames: ["subscriber_id"],
-            referencedColumnNames: ["uuid"],
-            referencedTableName: "subscribers",
-        }));
-
-        await queryRunner.createForeignKey("event_log", new TableForeignKey({
-            columnNames: ["subscriber_id"],
-            referencedColumnNames: ["uuid"],
-            referencedTableName: "subscribers",
-        }));
-        await queryRunner.createForeignKey("event_log", new TableForeignKey({
-            columnNames: ["event_id"],
-            referencedColumnNames: ["id"],
-            referencedTableName: "events",
+        await queryRunner.createForeignKey('subscriptions', new TableForeignKey({
+            columnNames: ['subscriber_id'],
+            referencedColumnNames: ['uuid'],
+            referencedTableName: 'subscribers',
         }));
 
-        await queryRunner.createForeignKey("events", new TableForeignKey({
-            columnNames: ["event_type_id"],
-            referencedColumnNames: ["uuid"],
-            referencedTableName: "event_types",
+        await queryRunner.createForeignKey('event_log', new TableForeignKey({
+            columnNames: ['subscriber_id'],
+            referencedColumnNames: ['uuid'],
+            referencedTableName: 'subscribers',
+        }));
+        await queryRunner.createForeignKey('event_log', new TableForeignKey({
+            columnNames: ['event_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'events',
+        }));
+
+        await queryRunner.createForeignKey('events', new TableForeignKey({
+            columnNames: ['event_type_id'],
+            referencedColumnNames: ['uuid'],
+            referencedTableName: 'event_types',
         }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("subscriptions");
-        await queryRunner.dropTable("event_log");
-        await queryRunner.dropTable("events");
-        await queryRunner.dropTable("event_types");
-        await queryRunner.dropTable("subscribers");
+        await queryRunner.dropTable('subscriptions');
+        await queryRunner.dropTable('event_log');
+        await queryRunner.dropTable('events');
+        await queryRunner.dropTable('event_types');
+        await queryRunner.dropTable('subscribers');
     }
 
 }
