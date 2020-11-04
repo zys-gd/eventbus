@@ -1,6 +1,6 @@
-import {Injectable} from '@nestjs/common';
-import {ConfigService} from '@nestjs/config';
-import {TypeOrmModuleOptions} from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
 
 @Injectable()
 export class AppConfigService {
@@ -18,14 +18,14 @@ export class AppConfigService {
             debug: this.config.get('MYSQL_DEBUG') === 'true' ? ['ComQueryPacket'] : false,
             synchronize: true,
             entities: [
-                "./entities/*entity.ts"
+                './entities/*entity.ts'
             ],
             migrations: [
-                "./migrations/*.ts"
+                './migrations/*.ts'
             ],
             cli: {
-                entitiesDir: "entities",
-                migrationsDir: "migrations",
+                entitiesDir: 'entities',
+                migrationsDir: 'migrations',
             }
         };
     }

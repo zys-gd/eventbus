@@ -1,6 +1,6 @@
 /* tslint:disable:object-literal-sort-keys */
-import {ConfigService} from '@nestjs/config';
-import {AppConfigService} from "./apps/api/src/app-config.service";
+import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from "./apps/api/src/app-config.service";
 
 export = {
     ...(new AppConfigService(new ConfigService())).dbConfig,

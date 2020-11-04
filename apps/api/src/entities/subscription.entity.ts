@@ -1,6 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
-import {EventTypeEntity} from "./event-type.entity";
-import {SubscriberEntity} from "./subscriber.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { EventTypeEntity } from "./event-type.entity";
+import { SubscriberEntity } from "./subscriber.entity";
 
 @Entity()
 export class SubscriptionEntity {

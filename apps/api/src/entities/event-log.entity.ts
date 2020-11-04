@@ -1,6 +1,6 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {EventEntity} from "./event.entity";
-import {SubscriberEntity} from "./subscriber.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { EventEntity } from "./event.entity";
+import { SubscriberEntity } from "./subscriber.entity";
 
 @Entity()
 export class EventLogEntity {
