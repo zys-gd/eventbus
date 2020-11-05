@@ -8,9 +8,11 @@ export class SubscriptionEntity {
     @PrimaryGeneratedColumn('uuid')
     uuid?: string;
 
-    @Column() notificationUrl?: string;
+    @Column()
+    notificationUrl?: string;
 
-    @Column() createdDatetime?: Date;
+    @Column()
+    createdDatetime?: Date;
 
     @ManyToOne(() => EventTypeEntity, eventTypeEntity => eventTypeEntity.subscriptions)
     eventType?: EventTypeEntity;

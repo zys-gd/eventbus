@@ -7,7 +7,8 @@ export class EventTypeEntity {
     @PrimaryGeneratedColumn('uuid')
     uuid?: string;
 
-    @Column() name?: string;
+    @Column()
+    name?: string;
 
     @OneToMany(() => SubscriptionEntity, subscriptions => subscriptions.eventType)
     subscriptions?: SubscriptionEntity[];

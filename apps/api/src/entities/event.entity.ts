@@ -7,9 +7,11 @@ export class EventEntity {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column() data?: string;
+    @Column()
+    data?: string;
 
-    @Column() createdDatetime?: Date;
+    @Column()
+    createdDatetime?: Date;
 
     @OneToOne(() => EventTypeEntity)
     @JoinColumn()

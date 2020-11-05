@@ -7,13 +7,17 @@ export class SubscriberEntity {
     @PrimaryGeneratedColumn('uuid')
     uuid?: string;
 
-    @Column() subscriber?: string;
+    @Column()
+    subscriber?: string;
 
-    @Column() apiKey?: string;
+    @Column()
+    apiKey?: string;
 
-    @Column() apiSecret?: string;
+    @Column()
+    apiSecret?: string;
 
-    @Column() active?: boolean;
+    @Column()
+    active?: boolean;
 
     @OneToMany(() => SubscriptionEntity, subscriptions => subscriptions.eventType)
     subscriptions?: SubscriptionEntity[];

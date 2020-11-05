@@ -8,9 +8,11 @@ export class EventLogEntity {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column() deliveryDatetime?: Date;
+    @Column()
+    deliveryDatetime?: Date;
 
-    @Column() tries?: number;
+    @Column()
+    tries?: number;
 
     @OneToOne(() => EventEntity)
     @JoinColumn()
