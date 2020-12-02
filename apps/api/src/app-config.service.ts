@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
+import { ClientOptions, Transport } from '@nestjs/microservices';
 
 @Injectable()
 export class AppConfigService {
@@ -27,6 +28,20 @@ export class AppConfigService {
                 entitiesDir: 'entities',
                 migrationsDir: 'migrations',
             }
+        };
+    }
+
+    get rabbitmqConfig(): ClientOptions {
+        return {
+            // name: 'EVENT_SERVICE',
+            transport: Transport.RMQ,
+            options: {
+                urls: ['amqp://eventbus_rabbitmq:5672'],
+                queue: 'events',
+                queueOptions: {
+                    durable: false
+                },
+            },
         };
     }
 }

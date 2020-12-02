@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppConfigService } from './app-config.service';
 import { AuthModule } from './auth/auth.module';
+import { ClientProxyFactory } from '@nestjs/microservices';
 
 @Module({
     imports: [
@@ -20,7 +21,17 @@ import { AuthModule } from './auth/auth.module';
         AuthModule,
     ],
     controllers: [AppController],
-    providers: [AppService, AppConfigService],
+    providers: [
+        AppService,
+        AppConfigService,
+        {
+            provide: 'EVENT_SERVICE',
+            useFactory: (configService: AppConfigService) => {
+                return ClientProxyFactory.create(configService.rabbitmqConfig);
+            },
+            inject: [AppConfigService],
+        }
+    ],
     exports: [AppConfigService],
 })
 

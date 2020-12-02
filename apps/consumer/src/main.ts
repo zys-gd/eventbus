@@ -7,7 +7,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
         transport: Transport.RMQ,
         options: {
             urls: ['amqp://eventbus_rabbitmq:5672'],
-            queue: 'subscribers',
+            queue: 'events',
             queueOptions: {
                 durable: false
             },
