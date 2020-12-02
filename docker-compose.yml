@@ -2,7 +2,7 @@ version: '3.8'
 services:
     node-api:
         container_name: eventbus_node_api
-        restart: on-failure
+        restart: always
         image: library/node:14
         volumes:
             - ./:/app
@@ -10,7 +10,7 @@ services:
         user: node
         ports:
             - "3000:3000"
-        command: npm run start:api:dev
+        command: ${ENTRYPOINT_API}
         depends_on:
             - mysql
         networks:
@@ -18,17 +18,13 @@ services:
 
     node-consumer:
         container_name: eventbus_node_consumer
-        restart: on-failure
+        restart: always
         image: library/node:14
         volumes:
             - ./:/app
         working_dir: /app
         user: node
-        command: >
-            bash -c "
-            sleep 5
-            && npm run start:consumer:dev
-            "
+        command: ${ENTRYPOINT_CONSUMER}
         depends_on:
             - rabbitmq
         networks:
