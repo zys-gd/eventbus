@@ -32,8 +32,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
                 name: 'EVENT_SERVICE',
                 transport: Transport.RMQ,
                 options: {
-                    urls: [String(process.env.QUEUE_NAME)],
-                    queue: process.env.RABBITMQ_CONNECTION,
+                    urls: [String(process.env.RABBITMQ_CONNECTION)],
+                    queue: process.env.QUEUE_NAME || '',
                     queueOptions: {
                         durable: false
                     },

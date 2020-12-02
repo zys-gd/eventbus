@@ -6,8 +6,8 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
     const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
         transport: Transport.RMQ,
         options: {
-            urls: ['amqp://eventbus_rabbitmq:5672'],
-            queue: 'events',
+            urls: [String(process.env.RABBITMQ_CONNECTION)],
+            queue: process.env.QUEUE_NAME || '',
             queueOptions: {
                 durable: false
             },
