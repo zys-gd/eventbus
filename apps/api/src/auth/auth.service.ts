@@ -15,10 +15,12 @@ export class AuthService {
         });
 
         if(!subscriber) {
-            return false;
+            return null;
         }
 
         const checkingHash = await hash(request, String(subscriber.apiSecret));
-        return await compare(requestHash, checkingHash);
+        if(await compare(requestHash, checkingHash)){
+            return subscriber;
+        }
     }
 }
