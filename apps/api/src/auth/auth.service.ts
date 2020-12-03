@@ -18,7 +18,7 @@ export class AuthService {
             return null;
         }
 
-        const checkingHash = await hash(request, String(subscriber.apiSecret));
+        const checkingHash = await hash(request, subscriber.apiSecret || '');
         if(await compare(requestHash, checkingHash)){
             return subscriber;
         }

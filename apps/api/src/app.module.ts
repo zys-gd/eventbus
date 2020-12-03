@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { EventController } from './controllers/event.controller';
+import { SubscribeController } from './controllers/subscribe.controller';
 
 @Module({
     imports: [
@@ -42,7 +43,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         ]),
         AuthModule,
     ],
-    controllers: [AppController],
+    controllers: [
+        EventController,
+        SubscribeController,
+    ],
     providers: [
         AppService,
     ],
