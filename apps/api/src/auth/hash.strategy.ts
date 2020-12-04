@@ -6,7 +6,9 @@ import { EventDto } from '../dto/event.dto';
 
 @Injectable()
 export class HashStrategy extends PassportStrategy(Strategy, 'hash') {
-    constructor(private authService: AuthService) {
+    constructor (
+        private authService: AuthService,
+    ) {
         super();
     }
 
