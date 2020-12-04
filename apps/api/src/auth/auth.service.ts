@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { getRepository } from 'typeorm';
 import { SubscriberEntity } from '../entities/subscriber.entity';
 import { compare, hash } from 'bcrypt';
+import { EventDto } from '../dto/event.dto';
 
 @Injectable()
 export class AuthService {
 
-    async validateHash(apiKey: string, request: string, requestHash: string): Promise<any> {
+    async validateHash(apiKey: string, data: EventDto, requestHash: string): Promise<any> {
         const subscriberRepository = getRepository(SubscriberEntity);
         const subscriber = await subscriberRepository.findOneOrFail({
             where: [
@@ -18,7 +19,7 @@ export class AuthService {
             return null;
         }
 
-        const checkingHash = await hash(request, subscriber.apiSecret || '');
+        const checkingHash = await hash(data, subscriber.apiSecret || '');
         if(await compare(requestHash, checkingHash)){
             return subscriber;
         }
