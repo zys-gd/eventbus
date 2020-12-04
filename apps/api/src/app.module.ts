@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -15,18 +14,14 @@ import { SubscribeController } from './controllers/subscribe.controller';
             database: process.env.MYSQL_DATABASE,
             host: process.env.MYSQL_HOST,
             port: Number(process.env.MYSQL_PORT),
-            debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
-            synchronize: true,
+            debug: true,
+            synchronize: false,
             entities: [
-                './entities/*entity.ts'
+                __dirname + '/entities/*entity.js'
             ],
             migrations: [
-                './migrations/*.ts'
+                __dirname + '/migrations/*.js'
             ],
-            cli: {
-                entitiesDir: 'entities',
-                migrationsDir: 'migrations',
-            }
         }),
         ClientsModule.register([
             {
@@ -47,9 +42,7 @@ import { SubscribeController } from './controllers/subscribe.controller';
         EventController,
         SubscribeController,
     ],
-    providers: [
-        AppService,
-    ],
+    providers: [],
     exports: [],
 })
 
