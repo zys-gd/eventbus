@@ -1,10 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
 
 @Entity()
 export class SubscriberEntity {
 
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn('uuid')
     uuid?: string;
 
     @Column()

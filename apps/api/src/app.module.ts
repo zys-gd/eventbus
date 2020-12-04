@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { EventController } from './controllers/event.controller';
 import { SubscribeController } from './controllers/subscribe.controller';
+import { EventService, SubscribeService } from './services';
 
 @Module({
     imports: [
@@ -42,7 +43,10 @@ import { SubscribeController } from './controllers/subscribe.controller';
         EventController,
         SubscribeController,
     ],
-    providers: [],
+    providers: [
+        EventService,
+        SubscribeService,
+    ],
     exports: [],
 })
 
