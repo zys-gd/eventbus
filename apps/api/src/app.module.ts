@@ -15,10 +15,10 @@ import { EventService, SubscribeService } from './services';
             database: process.env.MYSQL_DATABASE,
             host: process.env.MYSQL_HOST,
             port: Number(process.env.MYSQL_PORT),
-            debug: true,
+            debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
             synchronize: false,
             entities: [
-                __dirname + '/entities/*entity.js'
+                __dirname + '/entities/*.entity.js'
             ],
             migrations: [
                 __dirname + '/migrations/*.js'
