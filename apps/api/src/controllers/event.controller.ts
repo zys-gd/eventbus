@@ -1,7 +1,8 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
 import { EventDto } from '../dto/event.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EventService } from '../services';
+import { Response } from 'express';
 
 @Controller('event')
 export class EventController {
@@ -12,7 +13,11 @@ export class EventController {
 
     @UseGuards(AuthGuard('hash'))
     @Post()
-    make(@Body() eventDto: EventDto) {
+    make(
+        @Body() eventDto: EventDto,
+        @Res() res: Response,
+    ) {
         this.eventService.initEvent(eventDto);
+        res.status(HttpStatus.OK).json([]);
     }
 }

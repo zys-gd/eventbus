@@ -5,5 +5,5 @@ import { SubscriptionEntity } from '../entities/subscription.entity';
 export interface SubscribeServiceInterface {
     subscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<SubscriptionEntity>;
 
-    unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): any;
+    unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<boolean>;
 }

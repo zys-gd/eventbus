@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { EventController } from './controllers/event.controller';
 import { SubscribeController } from './controllers/subscribe.controller';
 import { EventService, SubscribeService } from './services';
+import { AuthService } from './services/auth.service';
+import { SubscriptionEntity } from './entities/subscription.entity';
+import { SubscriberEntity } from './entities/subscriber.entity';
+import { EventTypeEntity } from './entities/event-type.entity';
+import { EventEntity } from './entities/event.entity';
+import { HashStrategy } from './strategies/hash.strategy';
 
 @Module({
     imports: [
@@ -24,6 +29,12 @@ import { EventService, SubscribeService } from './services';
                 __dirname + '/migrations/*.js'
             ],
         }),
+        TypeOrmModule.forFeature([
+            SubscriptionEntity,
+            SubscriberEntity,
+            EventTypeEntity,
+            EventEntity
+        ]),
         ClientsModule.register([
             {
                 name: 'EVENT_SERVICE',
@@ -37,7 +48,6 @@ import { EventService, SubscribeService } from './services';
                 },
             },
         ]),
-        AuthModule,
     ],
     controllers: [
         EventController,
@@ -46,6 +56,8 @@ import { EventService, SubscribeService } from './services';
     providers: [
         EventService,
         SubscribeService,
+        AuthService,
+        HashStrategy
     ],
     exports: [],
 })

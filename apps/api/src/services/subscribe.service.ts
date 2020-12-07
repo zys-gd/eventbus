@@ -37,7 +37,7 @@ export class SubscribeService implements SubscribeServiceInterface {
         return subscription;
     }
 
-    public async unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity) {
+    public async unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<boolean> {
         const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
             where: [
                 { name: subscribeDto.eventType },
@@ -47,6 +47,7 @@ export class SubscribeService implements SubscribeServiceInterface {
             eventType: eventType,
             subscriber: subscriber
         });
+
         return true;
     }
 }
