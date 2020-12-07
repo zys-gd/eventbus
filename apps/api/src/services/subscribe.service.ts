@@ -3,23 +3,50 @@ import { SubscribeDto } from '../dto/subscribe.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SubscriptionEntity } from '../entities/subscription.entity';
-import { v4 as uuid, v4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { SubscriberEntity } from '../entities/subscriber.entity';
+import { SubscribeServiceInterface } from './subscribe.service.interface';
+import { EventTypeEntity } from '../entities/event-type.entity';
 
 @Injectable()
-export class SubscribeService {
+export class SubscribeService implements SubscribeServiceInterface {
 
     constructor(
         @InjectRepository(SubscriptionEntity)
         private readonly subscriptionEntityRepository: Repository<SubscriptionEntity>,
+
+        @InjectRepository(EventTypeEntity)
+        private readonly eventTypeEntityRepository: Repository<EventTypeEntity>,
     ) {}
 
-    public subscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity) {
-        this.subscriptionEntityRepository.save({ uuid: v4() });
-        return true;
+    public async subscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<SubscriptionEntity> {
+        const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
+            where: [
+                { name: subscribeDto.eventType },
+            ]
+        });
+
+        const subscription: SubscriptionEntity = new SubscriptionEntity();
+        subscription.uuid = uuid();
+        subscription.createdDatetime = new Date();
+        subscription.notificationUrl = subscribeDto.notificationUrl;
+        subscription.eventType = eventType;
+        subscription.subscriber = subscriber;
+        await this.subscriptionEntityRepository.save(subscription);
+
+        return subscription;
     }
 
-    public unsubscribe(subscribeDto: SubscribeDto) {
+    public async unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity) {
+        const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
+            where: [
+                { name: subscribeDto.eventType },
+            ]
+        });
+        await this.subscriptionEntityRepository.delete({
+            eventType: eventType,
+            subscriber: subscriber
+        });
         return true;
     }
 }
