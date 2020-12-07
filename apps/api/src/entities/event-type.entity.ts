@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
 
-@Entity()
+@Entity('event_types')
 export class EventTypeEntity {
 
     @PrimaryGeneratedColumn('uuid')

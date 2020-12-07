@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { EventTypeEntity } from './event-type.entity';
 import { SubscriberEntity } from './subscriber.entity';
 
-@Entity()
+@Entity('subsriptions')
 export class SubscriptionEntity {
 
     @PrimaryColumn('uuid')

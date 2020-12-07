@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 import { EventEntity } from './event.entity';
 import { SubscriberEntity } from './subscriber.entity';
 
-@Entity()
+@Entity('event_log')
 export class EventLogEntity {
 
     @PrimaryGeneratedColumn()
