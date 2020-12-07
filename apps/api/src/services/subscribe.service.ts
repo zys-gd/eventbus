@@ -27,17 +27,20 @@ export class SubscribeService implements SubscribeServiceInterface {
             ]
         });
 
-        const existingSubscription: SubscriptionEntity = await this.subscriptionEntityRepository.findOneOrFail({
-            where: [
-                {
-                  eventType: eventType,
-                  subscriber: subscriber,
-                },
-            ]
-        });
-        if(existingSubscription) {
-            throw new Error('Subscription already exists');
-        }
+        try {
+            const existingSubscription: SubscriptionEntity = await this.subscriptionEntityRepository.findOneOrFail({
+                where: [
+                    {
+                        eventType: eventType,
+                        subscriber: subscriber,
+                    },
+                ]
+            });
+
+            if (existingSubscription) {
+                throw new Error('Subscription already exists');
+            }
+        } catch (e) {}
 
         const subscription: SubscriptionEntity = new SubscriptionEntity();
         subscription.uuid = uuid();
