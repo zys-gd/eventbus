@@ -10,10 +10,10 @@ export class EventEntity {
     @Column()
     data?: string;
 
-    @Column()
+    @Column({ type: 'date' })
     createdDatetime?: Date;
 
     @OneToOne(() => EventTypeEntity)
-    @JoinColumn()
+    @JoinColumn({ name: 'event_type_id' })
     eventType?: EventTypeEntity;
 }

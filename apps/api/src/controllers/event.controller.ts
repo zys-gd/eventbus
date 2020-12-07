@@ -13,11 +13,11 @@ export class EventController {
 
     @UseGuards(AuthGuard('hash'))
     @Post()
-    make(
+    public async makeAction(
         @Body() eventDto: EventDto,
         @Res() res: Response,
     ) {
-        this.eventService.initEvent(eventDto);
-        res.status(HttpStatus.OK).json([]);
+        await this.eventService.initEvent(eventDto);
+        res.status(HttpStatus.CREATED).send();
     }
 }

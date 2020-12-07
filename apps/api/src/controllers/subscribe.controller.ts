@@ -14,23 +14,23 @@ export class SubscribeController {
 
     @UseGuards(AuthGuard('hash'))
     @Post()
-    subscribe(
+    public subscribeAction(
         @Body() subscribeDto: SubscribeDto,
         @Req() req: { user: SubscriberEntity },
         @Res() res: Response,
     ) {
         const subscription = this.subscribeService.subscribe(subscribeDto, req.user);
-        res.send(subscription);
+        res.status(HttpStatus.CREATED).send(subscription);
     }
 
     @UseGuards(AuthGuard('hash'))
     @Delete()
-    unsubscribe(
+    public async unsubscribeAction(
         @Body() subscribeDto: SubscribeDto,
         @Req() req: { user: SubscriberEntity },
         @Res() res: Response,
     ) {
-        this.subscribeService.unsubscribe(subscribeDto, req.user);
-        res.status(HttpStatus.OK).json([]);
+        await this.subscribeService.unsubscribe(subscribeDto, req.user);
+        res.status(HttpStatus.ACCEPTED).json([]);
     }
 }

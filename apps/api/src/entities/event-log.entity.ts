@@ -8,17 +8,17 @@ export class EventLogEntity {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column()
+    @Column({ type: 'date' })
     deliveryDatetime?: Date;
 
     @Column()
     tries?: number;
 
     @OneToOne(() => EventEntity)
-    @JoinColumn()
+    @JoinColumn({ name: 'event_id' })
     event?: EventEntity;
 
     @OneToOne(() => SubscriberEntity)
-    @JoinColumn()
+    @JoinColumn({ name: 'subscriber_id' })
     subscriber?: SubscriberEntity;
 }

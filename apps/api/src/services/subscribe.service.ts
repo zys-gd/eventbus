@@ -28,7 +28,6 @@ export class SubscribeService implements SubscribeServiceInterface {
 
         const subscription: SubscriptionEntity = new SubscriptionEntity();
         subscription.uuid = uuid();
-        subscription.createdDatetime = new Date();
         subscription.notificationUrl = subscribeDto.notificationUrl;
         subscription.eventType = eventType;
         subscription.subscriber = subscriber;

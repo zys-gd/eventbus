@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-strategy';
 import { AuthService } from '../services/auth.service';
-import { EventDto } from '../dto/event.dto';
 
 @Injectable()
 export class HashStrategy extends PassportStrategy(Strategy, 'hash') {
@@ -13,14 +12,14 @@ export class HashStrategy extends PassportStrategy(Strategy, 'hash') {
     }
 
     async authenticate(req: any) {
-        const user = await this.authService.validateHash(
+        const subscriber = await this.authService.validateHash(
             req.headers['apikey'] || '',
-            req.body as EventDto,
+            req.body,
             req.headers['hash'] || ''
         );
-        if (!user) {
+        if (!subscriber) {
             return this.fail(401);
         }
-        return this.success(user);
+        return this.success(subscriber);
     }
 }
