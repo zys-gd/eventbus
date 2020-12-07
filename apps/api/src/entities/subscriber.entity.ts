@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
 
-@Entity()
+@Entity('subscribers')
 export class SubscriberEntity {
 
     @PrimaryColumn('uuid')

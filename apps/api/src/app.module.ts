@@ -10,6 +10,7 @@ import { SubscriberEntity } from './entities/subscriber.entity';
 import { EventTypeEntity } from './entities/event-type.entity';
 import { EventEntity } from './entities/event.entity';
 import { HashStrategy } from './strategies/hash.strategy';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
     imports: [
@@ -22,6 +23,8 @@ import { HashStrategy } from './strategies/hash.strategy';
             port: Number(process.env.MYSQL_PORT),
             debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
             synchronize: false,
+            logging: true,
+            namingStrategy: new SnakeNamingStrategy(),
             entities: [
                 __dirname + '/entities/*.entity.js'
             ],
