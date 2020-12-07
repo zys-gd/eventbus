@@ -1,10 +1,22 @@
-import { Body, Controller, Delete, HttpStatus, Put, Req, Res, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    ClassSerializerInterceptor,
+    Controller,
+    Delete,
+    HttpStatus,
+    Put,
+    Req,
+    Res,
+    UseGuards,
+    UseInterceptors
+} from '@nestjs/common';
 import { SubscribeDto } from '../dto/subscribe.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { SubscribeService } from '../services';
 import { SubscriberEntity } from '../entities/subscriber.entity';
 import { Response } from 'express';
 import { UnsubscribeDto } from '../dto/unsubscribe.dto';
+import { SubscriptionEntity } from '../entities/subscription.entity';
 
 @Controller('subscribe')
 export class SubscribeController {
@@ -21,8 +33,8 @@ export class SubscribeController {
         @Res() res: Response,
     ) {
         try {
-            const subscription = await this.subscribeService.subscribe(subscribeDto, req.user);
-            res.status(HttpStatus.CREATED).send(subscription);
+            const subscription: SubscriptionEntity = await this.subscribeService.subscribe(subscribeDto, req.user);
+            res.status(HttpStatus.CREATED).send();
         }
         catch(e) {
             res.status(HttpStatus.CONFLICT).send();

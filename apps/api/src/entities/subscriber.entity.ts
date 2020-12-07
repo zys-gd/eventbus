@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('subscribers')
 export class SubscriberEntity {
@@ -14,9 +15,11 @@ export class SubscriberEntity {
     apiKey?: string;
 
     @Column()
+    @Exclude()
     apiSecret?: string;
 
     @Column()
+    @Exclude()
     active?: boolean;
 
     @OneToMany(() => SubscriptionEntity, subscriptions => subscriptions.eventType)
