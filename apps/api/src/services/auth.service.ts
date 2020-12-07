@@ -21,9 +21,7 @@ export class AuthService {
         if(!subscriber) {
             return null;
         }
-        // eslint-disable-next-line no-console
-        // console.log('@@@@@@', JSON.stringify(event) + subscriber.apiSecret);
-        // process.exit(1);
+
         if(await compare(JSON.stringify(event) + subscriber.apiSecret, requestHash)){
             return subscriber;
         }

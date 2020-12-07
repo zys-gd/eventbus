@@ -11,6 +11,7 @@ import { EventTypeEntity } from './entities/event-type.entity';
 import { EventEntity } from './entities/event.entity';
 import { HashStrategy } from './strategies/hash.strategy';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { EventLogEntity } from './entities/event-log.entity';
 
 @Module({
     imports: [
@@ -36,7 +37,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
             SubscriptionEntity,
             SubscriberEntity,
             EventTypeEntity,
-            EventEntity
+            EventEntity,
+            EventLogEntity
         ]),
         ClientsModule.register([
             {
@@ -50,7 +52,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                     },
                 },
             },
-        ]),
+        ])
     ],
     controllers: [
         EventController,

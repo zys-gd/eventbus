@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, Unique } from 'typeorm';
 import { EventTypeEntity } from './event-type.entity';
 import { SubscriberEntity } from './subscriber.entity';
 
 @Entity('subscriptions')
+@Unique('UNIQ_INDEX_ES', ['eventType', 'subscriber'])
 export class SubscriptionEntity {
 
     @PrimaryColumn('uuid')

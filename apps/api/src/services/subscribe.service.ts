@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { SubscriberEntity } from '../entities/subscriber.entity';
 import { SubscribeServiceInterface } from './subscribe.service.interface';
 import { EventTypeEntity } from '../entities/event-type.entity';
+import { UnsubscribeDto } from '../dto/unsubscribe.dto';
 
 @Injectable()
 export class SubscribeService implements SubscribeServiceInterface {
@@ -26,6 +27,18 @@ export class SubscribeService implements SubscribeServiceInterface {
             ]
         });
 
+        const existingSubscription: SubscriptionEntity = await this.subscriptionEntityRepository.findOneOrFail({
+            where: [
+                {
+                  eventType: eventType,
+                  subscriber: subscriber,
+                },
+            ]
+        });
+        if(existingSubscription) {
+            throw new Error('Subscription already exists');
+        }
+
         const subscription: SubscriptionEntity = new SubscriptionEntity();
         subscription.uuid = uuid();
         subscription.notificationUrl = subscribeDto.notificationUrl;
@@ -36,10 +49,10 @@ export class SubscribeService implements SubscribeServiceInterface {
         return subscription;
     }
 
-    public async unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<boolean> {
+    public async unsubscribe(unsubscribeDto: UnsubscribeDto, subscriber: SubscriberEntity): Promise<boolean> {
         const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
             where: [
-                { name: subscribeDto.eventType },
+                { name: unsubscribeDto.eventType },
             ]
         });
         await this.subscriptionEntityRepository.delete({
