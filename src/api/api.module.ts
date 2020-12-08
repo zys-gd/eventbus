@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CommonModule } from '../common';
+import { CommonModule, EventbusConstants } from '../common';
 import { EventController, SubscribeController } from './controllers';
 import { AuthService, EventService, SubscribeService } from './services';
 import { HashStrategy } from './strategies';
-import { EventbusConstants } from '../common/eventbus-constants';
 
 @Module({
     imports: [
@@ -17,7 +16,7 @@ import { EventbusConstants } from '../common/eventbus-constants';
                     urls: [String(process.env.RABBITMQ_CONNECTION)],
                     queue: process.env.QUEUE_NAME || '',
                     queueOptions: {
-                        durable: false
+                        durable: true
                     },
                 },
             },

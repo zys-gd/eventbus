@@ -4,8 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { EventServiceInterface } from './event.service.interface';
-import { EventEntity, EventTypeEntity } from '../../common/entities';
-import { EventbusConstants } from '../../common/eventbus-constants';
+import { EventbusConstants, EventEntity, EventTypeEntity } from '../../common';
 
 @Injectable()
 export class EventService implements EventServiceInterface {

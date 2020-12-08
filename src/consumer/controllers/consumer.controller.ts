@@ -1,8 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-import { EventEntity } from '../../common/entities';
+import { EventbusConstants, EventEntity } from '../../common';
 import { EventNotificationService } from '../services';
-import { EventbusConstants } from '../../common/eventbus-constants';
 
 @Controller()
 export class ConsumerController {

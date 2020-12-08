@@ -10,7 +10,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
             queue: process.env.QUEUE_NAME || '',
             noAck: false,
             queueOptions: {
-                durable: false
+                durable: true
             },
         },
     });

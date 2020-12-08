@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
 import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EventTypeEntity, SubscriberEntity, SubscriptionEntity } from '../../common/entities';
-import { v4 as uuid } from 'uuid';
+import { EventTypeEntity, SubscriberEntity, SubscriptionEntity } from '../../common';
 import { SubscribeServiceInterface } from './subscribe.service.interface';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { SubscribeDto } from '../dto';
-import { SubscriberEntity, SubscriptionEntity } from '../../common/entities';
+import { SubscriberEntity, SubscriptionEntity } from '../../common';
 
 export interface SubscribeServiceInterface {
     /**
