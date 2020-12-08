@@ -11,7 +11,7 @@ export class AuthService {
         private readonly subscriberRepository: Repository<SubscriberEntity>,
     ) {}
 
-    async validateHash(apiKey: string, event: string, requestHash: string): Promise<any> {
+    async validateHash(apiKey: string, event: string, requestHash: string): Promise<SubscriberEntity | undefined> {
         const subscriber = await this.subscriberRepository.findOneOrFail({
             where: [
                 { apiKey: apiKey },
@@ -19,7 +19,7 @@ export class AuthService {
         });
 
         if(!subscriber) {
-            return null;
+            return undefined;
         }
 
         if(await compare(JSON.stringify(event) + subscriber.apiSecret, requestHash)){

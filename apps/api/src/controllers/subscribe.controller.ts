@@ -20,7 +20,7 @@ export class SubscribeController {
         @Res() res: Response,
     ) {
         try {
-            const subscription: SubscriptionEntity = await this.subscribeService.subscribe(subscribeDto, req.user);
+            await this.subscribeService.subscribe(subscribeDto, req.user);
             res.status(HttpStatus.CREATED).send();
         }
         catch(e) {
