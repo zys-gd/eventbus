@@ -2,7 +2,7 @@ import { Body, Controller, Delete, HttpStatus, Put, Req, Res, UseGuards } from '
 import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { SubscribeService } from '../services';
-import { SubscriberEntity } from '../entities';
+import { SubscriberEntity } from '../../common/entities';
 
 @Controller('subscribe')
 export class SubscribeController {

@@ -1,4 +1,4 @@
-import { SubscriberEntity } from '../entities';
+import { SubscriberEntity } from '../../common/entities';
 
 export interface AuthServiceInterface {
     /**

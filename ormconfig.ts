@@ -7,10 +7,10 @@ export = {
     port: Number(process.env.MYSQL_PORT),
     debug: false,
     synchronize: false,
-    entities: [__dirname + '/src/entities/*.entity.ts'],
-    migrations: [__dirname + '/src/migrations/*.ts'],
+    entities: [__dirname + '/src/common/entities/*.entity.ts'],
+    migrations: [__dirname + '/src/common/migrations/*.ts'],
     cli: {
-        migrationsDir: 'apps/api/src/migrations',
-        entitiesDir: 'apps/api/src/entities',
+        migrationsDir: 'src/common/migrations',
+        entitiesDir: 'src/common/entities',
     },
 };

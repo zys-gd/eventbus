@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ConsumerModule } from './consumer';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 (async function () {
-    const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+    const app = await NestFactory.createMicroservice<MicroserviceOptions>(ConsumerModule, {
         transport: Transport.RMQ,
         options: {
             urls: [String(process.env.RABBITMQ_CONNECTION)],
