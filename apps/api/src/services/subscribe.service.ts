@@ -49,7 +49,7 @@ export class SubscribeService implements SubscribeServiceInterface {
         return subscription;
     }
 
-    public async unsubscribe(unsubscribeDto: UnsubscribeDto, subscriber: SubscriberEntity): Promise<boolean> {
+    public async unsubscribe(unsubscribeDto: UnsubscribeDto, subscriber: SubscriberEntity): Promise<void> {
         const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
             where: [
                 { name: unsubscribeDto.eventType },
@@ -59,7 +59,5 @@ export class SubscribeService implements SubscribeServiceInterface {
             eventType: eventType,
             subscriber: subscriber
         });
-
-        return true;
     }
 }
