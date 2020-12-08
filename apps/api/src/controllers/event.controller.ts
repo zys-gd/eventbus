@@ -2,7 +2,6 @@ import { Body, Controller, HttpStatus, Post, Res, UseGuards } from '@nestjs/comm
 import { EventDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EventService } from '../services';
-import { Response } from 'express';
 
 @Controller('event')
 export class EventController {
@@ -15,7 +14,7 @@ export class EventController {
     @Post()
     public async makeAction(
         @Body() eventDto: EventDto,
-        @Res() res: Response,
+        @Res() res: any,
     ) {
         await this.eventService.initEvent(eventDto);
         res.status(HttpStatus.CREATED).send();

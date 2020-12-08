@@ -3,7 +3,6 @@ import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { SubscribeService } from '../services';
 import { SubscriberEntity } from '../entities';
-import { Response } from 'express';
 
 @Controller('subscribe')
 export class SubscribeController {
@@ -17,7 +16,7 @@ export class SubscribeController {
     public async subscribeAction(
         @Body() subscribeDto: SubscribeDto,
         @Req() req: { user: SubscriberEntity },
-        @Res() res: Response,
+        @Res() res: any,
     ) {
         try {
             await this.subscribeService.subscribe(subscribeDto, req.user);
@@ -33,7 +32,7 @@ export class SubscribeController {
     public async unsubscribeAction(
         @Body() unsubscribeDto: UnsubscribeDto,
         @Req() req: { user: SubscriberEntity },
-        @Res() res: Response,
+        @Res() res: any,
     ) {
         try {
             await this.subscribeService.unsubscribe(unsubscribeDto, req.user);
