@@ -1,4 +1,4 @@
-import { EventDto } from '../dto/event.dto';
+import { EventDto } from '../dto';
 
 export interface EventServiceInterface {
     initEvent(eventDto: EventDto): Promise<void>;

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SubscriberEntity } from '../entities/subscriber.entity';
-import { compare, hash, genSalt } from 'bcrypt';
+import { SubscriberEntity } from '../entities';
+import { compare } from 'bcrypt';
 
 @Injectable()
 export class AuthService {

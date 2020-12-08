@@ -1,22 +1,9 @@
-import {
-    Body,
-    ClassSerializerInterceptor,
-    Controller,
-    Delete,
-    HttpStatus,
-    Put,
-    Req,
-    Res,
-    UseGuards,
-    UseInterceptors
-} from '@nestjs/common';
-import { SubscribeDto } from '../dto/subscribe.dto';
+import { Body, Controller, Delete, HttpStatus, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { SubscribeService } from '../services';
-import { SubscriberEntity } from '../entities/subscriber.entity';
+import { SubscriberEntity, SubscriptionEntity } from '../entities';
 import { Response } from 'express';
-import { UnsubscribeDto } from '../dto/unsubscribe.dto';
-import { SubscriptionEntity } from '../entities/subscription.entity';
 
 @Controller('subscribe')
 export class SubscribeController {

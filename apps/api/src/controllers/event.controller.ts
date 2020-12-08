@@ -1,5 +1,5 @@
 import { Body, Controller, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
-import { EventDto } from '../dto/event.dto';
+import { EventDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EventService } from '../services';
 import { Response } from 'express';

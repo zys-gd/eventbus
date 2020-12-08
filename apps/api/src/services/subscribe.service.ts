@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { SubscribeDto } from '../dto/subscribe.dto';
+import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SubscriptionEntity } from '../entities/subscription.entity';
+import { EventTypeEntity, SubscriberEntity, SubscriptionEntity } from '../entities';
 import { v4 as uuid } from 'uuid';
-import { SubscriberEntity } from '../entities/subscriber.entity';
 import { SubscribeServiceInterface } from './subscribe.service.interface';
-import { EventTypeEntity } from '../entities/event-type.entity';
-import { UnsubscribeDto } from '../dto/unsubscribe.dto';
 
 @Injectable()
 export class SubscribeService implements SubscribeServiceInterface {

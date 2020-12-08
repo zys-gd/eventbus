@@ -1,17 +1,11 @@
 import { Module } from '@nestjs/common';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { EventController } from './controllers/event.controller';
-import { SubscribeController } from './controllers/subscribe.controller';
-import { EventService, SubscribeService } from './services';
-import { AuthService } from './services/auth.service';
-import { SubscriptionEntity } from './entities/subscription.entity';
-import { SubscriberEntity } from './entities/subscriber.entity';
-import { EventTypeEntity } from './entities/event-type.entity';
-import { EventEntity } from './entities/event.entity';
-import { HashStrategy } from './strategies/hash.strategy';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { EventLogEntity } from './entities/event-log.entity';
+import { EventController, SubscribeController } from './controllers';
+import { AuthService, EventService, SubscribeService } from './services';
+import { EventEntity, EventLogEntity, EventTypeEntity, SubscriberEntity, SubscriptionEntity } from './entities';
+import { HashStrategy } from './strategies';
 
 @Module({
     imports: [

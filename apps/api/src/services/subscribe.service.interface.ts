@@ -1,6 +1,5 @@
-import { SubscribeDto } from '../dto/subscribe.dto';
-import { SubscriberEntity } from '../entities/subscriber.entity';
-import { SubscriptionEntity } from '../entities/subscription.entity';
+import { SubscribeDto } from '../dto';
+import { SubscriberEntity, SubscriptionEntity } from '../entities';
 
 export interface SubscribeServiceInterface {
     subscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<SubscriptionEntity>;

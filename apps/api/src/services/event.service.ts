@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { EventDto } from '../dto/event.dto';
+import { EventDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { EventServiceInterface } from './event.service.interface';
-import { EventEntity } from '../entities/event.entity';
-import { EventTypeEntity } from '../entities/event-type.entity';
+import { EventEntity, EventTypeEntity } from '../entities';
 
 @Injectable()
 export class EventService implements EventServiceInterface {
