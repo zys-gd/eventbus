@@ -12,7 +12,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         private httpService: HttpService
     ) {}
 
-    public async notifySubscribers(event: EventEntity): Promise<any> {
+    public async notifySubscribers(event: EventEntity): Promise<void> {
         const subscriptions: SubscriptionEntity[] = await this.subscriptionEntityRepository.find({
             where: [
                 { eventType: event.eventType },
@@ -21,7 +21,6 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         for (const subscription of subscriptions) {
             await this.httpService.post(subscription.notificationUrl || '', event.data);
         }
-        return Promise.resolve(undefined);
     }
 
 }

@@ -11,7 +11,7 @@ export class ConsumerController {
     ) {}
 
     @EventPattern(EventbusConstants.QUEUE_PATTERN)
-    public async getNotifications(@Payload() eventEntity: EventEntity, @Ctx() context: RmqContext) {
+    public async notifyAction(@Payload() eventEntity: EventEntity, @Ctx() context: RmqContext) {
         context.getChannelRef().ack(context.getMessage());
         await this.eventNotificationService.notifySubscribers(eventEntity);
     }
