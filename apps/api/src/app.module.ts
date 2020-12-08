@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { EventController, SubscribeController } from './controllers';
+import { AuthService, EventService, SubscribeService } from './services';
+import { EventEntity, EventLogEntity, EventTypeEntity, SubscriberEntity, SubscriptionEntity } from './entities';
+import { HashStrategy } from './strategies';
 
 @Module({
     imports: [
@@ -15,18 +17,23 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             host: process.env.MYSQL_HOST,
             port: Number(process.env.MYSQL_PORT),
             debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
-            synchronize: true,
+            synchronize: false,
+            logging: true,
+            namingStrategy: new SnakeNamingStrategy(),
             entities: [
-                './entities/*entity.ts'
+                __dirname + '/entities/*.entity.js'
             ],
             migrations: [
-                './migrations/*.ts'
+                __dirname + '/migrations/*.js'
             ],
-            cli: {
-                entitiesDir: 'entities',
-                migrationsDir: 'migrations',
-            }
         }),
+        TypeOrmModule.forFeature([
+            SubscriptionEntity,
+            SubscriberEntity,
+            EventTypeEntity,
+            EventEntity,
+            EventLogEntity
+        ]),
         ClientsModule.register([
             {
                 name: 'EVENT_SERVICE',
@@ -39,12 +46,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
                     },
                 },
             },
-        ]),
-        AuthModule,
+        ])
     ],
-    controllers: [AppController],
+    controllers: [
+        EventController,
+        SubscribeController,
+    ],
     providers: [
-        AppService,
+        EventService,
+        SubscribeService,
+        AuthService,
+        HashStrategy
     ],
     exports: [],
 })

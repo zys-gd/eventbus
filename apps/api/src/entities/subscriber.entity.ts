@@ -1,10 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
+import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity('subscribers')
 export class SubscriberEntity {
 
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn('uuid')
     uuid?: string;
 
     @Column()
@@ -14,9 +15,11 @@ export class SubscriberEntity {
     apiKey?: string;
 
     @Column()
+    @Exclude()
     apiSecret?: string;
 
     @Column()
+    @Exclude()
     active?: boolean;
 
     @OneToMany(() => SubscriptionEntity, subscriptions => subscriptions.eventType)

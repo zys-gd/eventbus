@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
 export class InitialMigration1604053942583 implements MigrationInterface {
 
@@ -187,6 +187,8 @@ export class InitialMigration1604053942583 implements MigrationInterface {
             referencedColumnNames: ['uuid'],
             referencedTableName: 'event_types',
         }));
+
+        await queryRunner.createIndex('subscriptions', new TableIndex({ columnNames: ['event_type_id', 'subscriber_id'] }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

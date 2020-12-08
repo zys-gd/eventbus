@@ -2,23 +2,23 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 import { EventEntity } from './event.entity';
 import { SubscriberEntity } from './subscriber.entity';
 
-@Entity()
+@Entity('event_log')
 export class EventLogEntity {
 
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column()
+    @Column({ type: 'date' })
     deliveryDatetime?: Date;
 
     @Column()
     tries?: number;
 
     @OneToOne(() => EventEntity)
-    @JoinColumn()
+    @JoinColumn({ name: 'event_id' })
     event?: EventEntity;
 
     @OneToOne(() => SubscriberEntity)
-    @JoinColumn()
+    @JoinColumn({ name: 'subscriber_id' })
     subscriber?: SubscriberEntity;
 }

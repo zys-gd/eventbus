@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { EventTypeEntity } from './event-type.entity';
 
-@Entity()
+@Entity('events')
 export class EventEntity {
 
     @PrimaryGeneratedColumn()
@@ -10,10 +10,10 @@ export class EventEntity {
     @Column()
     data?: string;
 
-    @Column()
+    @Column({ type: 'date' })
     createdDatetime?: Date;
 
     @OneToOne(() => EventTypeEntity)
-    @JoinColumn()
+    @JoinColumn({ name: 'event_type_id' })
     eventType?: EventTypeEntity;
 }

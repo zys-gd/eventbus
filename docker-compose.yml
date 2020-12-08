@@ -53,7 +53,7 @@ services:
 
     rabbitmq:
         container_name: eventbus_rabbitmq
-        image: library/rabbitmq:3
+        image: library/rabbitmq:3.8.9
         restart: always
         hostname: eventbus-rmq
         volumes:
