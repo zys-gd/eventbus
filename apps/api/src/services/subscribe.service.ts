@@ -25,7 +25,7 @@ export class SubscribeService implements SubscribeServiceInterface {
         });
 
         try {
-            const existingSubscription: SubscriptionEntity = await this.subscriptionEntityRepository.findOneOrFail({
+            const existingSubscription: number = await this.subscriptionEntityRepository.count({
                 where: [
                     {
                         eventType: eventType,
@@ -34,7 +34,7 @@ export class SubscribeService implements SubscribeServiceInterface {
                 ]
             });
 
-            if (existingSubscription) {
+            if (existingSubscription != 0) {
                 throw new Error('Subscription already exists');
             }
         } catch (e) {}
