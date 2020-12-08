@@ -7,8 +7,9 @@ export class EventEntity {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column()
-    data?: string;
+    @Column({ type: 'simple-json' })
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    data?: number | string | object;
 
     @Column({ type: 'date' })
     createdDatetime?: Date;

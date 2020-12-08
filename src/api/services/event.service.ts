@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { EventServiceInterface } from './event.service.interface';
 import { EventEntity, EventTypeEntity } from '../../common/entities';
+import { EventbusConstants } from '../../common/eventbus-constants';
 
 @Injectable()
 export class EventService implements EventServiceInterface {
@@ -16,7 +17,7 @@ export class EventService implements EventServiceInterface {
         @InjectRepository(EventTypeEntity)
         private readonly eventTypeEntityRepository: Repository<EventTypeEntity>,
 
-        @Inject('EVENT_SERVICE')
+        @Inject(EventbusConstants.EVENT_SERVICE)
         private readonly client: ClientProxy,
     ) {}
 
@@ -27,11 +28,11 @@ export class EventService implements EventServiceInterface {
             ]
         });
 
-        await this.eventEntityRepository.save({
+        const event: EventEntity = await this.eventEntityRepository.save({
             data: eventDto.data,
-            eventType: eventType,
+            eventType,
         });
 
-        this.client.emit<number>(eventDto.eventType, eventDto.data);
+        this.client.emit<number>(EventbusConstants.QUEUE_PATTERN, event);
     }
 }

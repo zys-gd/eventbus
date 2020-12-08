@@ -4,13 +4,14 @@ import { CommonModule } from '../common';
 import { EventController, SubscribeController } from './controllers';
 import { AuthService, EventService, SubscribeService } from './services';
 import { HashStrategy } from './strategies';
+import { EventbusConstants } from '../common/eventbus-constants';
 
 @Module({
     imports: [
         CommonModule,
         ClientsModule.register([
             {
-                name: 'EVENT_SERVICE',
+                name: EventbusConstants.EVENT_SERVICE,
                 transport: Transport.RMQ,
                 options: {
                     urls: [String(process.env.RABBITMQ_CONNECTION)],

@@ -8,6 +8,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
         options: {
             urls: [String(process.env.RABBITMQ_CONNECTION)],
             queue: process.env.QUEUE_NAME || '',
+            noAck: false,
             queueOptions: {
                 durable: false
             },

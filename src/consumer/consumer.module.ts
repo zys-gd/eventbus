@@ -1,14 +1,19 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { CommonModule } from '../common';
-import { AppController } from './controllers';
-import { AppService } from './services';
+import { ConsumerController } from './controllers';
+import { EventNotificationService } from './services';
 
 @Module({
     imports: [
         CommonModule,
+        HttpModule
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    controllers: [
+        ConsumerController
+    ],
+    providers: [
+        EventNotificationService,
+    ],
 })
 export class ConsumerModule {
 }
