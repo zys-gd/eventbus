@@ -3,9 +3,10 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubscriberEntity } from '../entities';
 import { compare } from 'bcrypt';
+import { AuthServiceInterface } from './auth.service.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements AuthServiceInterface{
     constructor(
         @InjectRepository(SubscriberEntity)
         private readonly subscriberRepository: Repository<SubscriberEntity>,
