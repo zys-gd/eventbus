@@ -11,7 +11,7 @@ export class EventEntity {
     // eslint-disable-next-line @typescript-eslint/ban-types
     data?: number | string | object;
 
-    @Column({ type: 'date' })
+    @Column({ type: 'datetime' })
     createdDatetime?: Date;
 
     @OneToOne(() => EventTypeEntity)

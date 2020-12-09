@@ -15,6 +15,7 @@ import { HashStrategy } from './strategies';
                 options: {
                     urls: [String(process.env.RABBITMQ_CONNECTION)],
                     queue: process.env.QUEUE_NAME || '',
+                    noAck: false,
                     queueOptions: {
                         durable: true
                     },

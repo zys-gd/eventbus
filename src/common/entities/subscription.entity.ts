@@ -12,7 +12,7 @@ export class SubscriptionEntity {
     @Column()
     notificationUrl?: string;
 
-    @Column({ type: 'date' })
+    @Column({ type: 'datetime' })
     createdDatetime?: Date;
 
     @ManyToOne(() => EventTypeEntity, eventTypeEntity => eventTypeEntity.subscriptions)

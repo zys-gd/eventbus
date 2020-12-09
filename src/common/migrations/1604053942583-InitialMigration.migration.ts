@@ -114,8 +114,8 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                 {
                     name: 'delivery_datetime',
                     type: 'datetime',
-                    default: 'NOW()',
-                    isNullable: false,
+                    default: null,
+                    isNullable: true,
                 },
                 {
                     name: 'tries',

@@ -8,7 +8,7 @@ export class EventLogEntity {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column({ type: 'date' })
+    @Column({ type: 'datetime', nullable: true, default: null })
     deliveryDatetime?: Date;
 
     @Column()
