@@ -55,6 +55,8 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
     private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 1): Promise<void> {
         let eventLog: EventLogEntity;
+        const notificationDto: NotificationDto = new NotificationDto(event, tries, subscription.subscriber);
+
         try {
             eventLog = await this.eventLogEntityRepository.findOneOrFail({
                 where: [
@@ -82,11 +84,15 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                 eventLog.deliveryDatetime = new Date();
                 await this.eventLogEntityRepository.save(eventLog);
             } else {
-                this.client.emit<number>(EventbusConstants.NOTIFICATION_QUEUE_PATTERN, new NotificationDto(event, tries, subscription.subscriber));
+                this.pushNotification2Queue(notificationDto);
             }
         } catch (e) {
             await this.eventLogEntityRepository.save(eventLog);
-            this.client.emit<number>(EventbusConstants.NOTIFICATION_QUEUE_PATTERN, new NotificationDto(event, tries, subscription.subscriber));
+            this.pushNotification2Queue(notificationDto);
         }
+    }
+
+    private pushNotification2Queue(notificationDto: NotificationDto) {
+        this.client.emit<number>(EventbusConstants.NOTIFICATION_QUEUE_PATTERN, notificationDto);
     }
 }
