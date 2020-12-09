@@ -21,6 +21,9 @@ export class EventNotificationService implements EventNotificationServiceInterfa
     ) {
     }
 
+    /**
+     * @param event
+     */
     public async processEvent(event: EventEntity): Promise<Array<void>> {
         const subscriptions: SubscriptionEntity[] = await this.subscriptionEntityRepository.find({
             relations: ['subscriber'],
@@ -38,6 +41,9 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         );
     }
 
+    /**
+     * @param notificationDto
+     */
     public async processNotification(notificationDto: NotificationDto): Promise<void> {
         const subscription: SubscriptionEntity = await this.subscriptionEntityRepository.findOneOrFail({
             relations: ['subscriber'],
@@ -48,14 +54,20 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                 },
             ]
         });
-        if (notificationDto.tries < (process.env.NOTIFICATION_TRIES || this.NOTIFICATION_TRIES_DEFAULT)) {
-            await this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries + 1);
+
+        if (notificationDto.tries <= (process.env.NOTIFICATION_TRIES || this.NOTIFICATION_TRIES_DEFAULT)) {
+            await this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries);
         }
     }
 
-    private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 1): Promise<void> {
+    /**
+     * @param event
+     * @param subscription
+     * @param tries
+     * @private
+     */
+    private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<void> {
         let eventLog: EventLogEntity;
-        const notificationDto: NotificationDto = new NotificationDto(event, tries, subscription.subscriber);
 
         try {
             eventLog = await this.eventLogEntityRepository.findOneOrFail({
@@ -64,15 +76,17 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                 ]
             });
             if (typeof eventLog.tries === 'undefined') {
-                eventLog.tries = 0;
+                eventLog.tries = tries;
             }
-            eventLog.tries++;
+            eventLog.tries = tries;
         } catch (e) {
             eventLog = new EventLogEntity();
             eventLog.subscriber = subscription.subscriber;
             eventLog.event = event;
-            eventLog.tries = 1;
+            eventLog.tries = tries;
         }
+
+        const notificationDto: NotificationDto = new NotificationDto(event, tries + 1, subscription.subscriber);
 
         try {
             const response = await (this.httpService.post(
@@ -92,6 +106,10 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         }
     }
 
+    /**
+     * @param notificationDto
+     * @private
+     */
     private pushNotification2Queue(notificationDto: NotificationDto) {
         this.client.emit<number>(EventbusConstants.NOTIFICATION_QUEUE_PATTERN, notificationDto);
     }

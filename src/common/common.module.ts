@@ -21,7 +21,7 @@ import {
             port: Number(process.env.MYSQL_PORT),
             debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
             synchronize: false,
-            logging: true,
+            logging: false,
             namingStrategy: new SnakeNamingStrategy(),
             entities: [
                 __dirname + '/entities/*.entity.js'
