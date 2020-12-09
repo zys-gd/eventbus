@@ -15,7 +15,7 @@ export class SubscriptionEntity {
     @Column({ type: 'datetime' })
     createdDatetime?: Date;
 
-    @ManyToOne(() => EventTypeEntity, eventTypeEntity => eventTypeEntity.subscriptions)
+    @ManyToOne(() => EventTypeEntity)
     @JoinColumn({ name: 'event_type_id' })
     eventType?: EventTypeEntity;
 

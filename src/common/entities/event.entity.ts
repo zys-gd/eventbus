@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { EventTypeEntity } from './event-type.entity';
 
 @Entity('events')
@@ -14,7 +14,7 @@ export class EventEntity {
     @Column({ type: 'datetime' })
     createdDatetime?: Date;
 
-    @OneToOne(() => EventTypeEntity)
+    @ManyToOne(() => EventTypeEntity)
     @JoinColumn({ name: 'event_type_id' })
     eventType?: EventTypeEntity;
 }

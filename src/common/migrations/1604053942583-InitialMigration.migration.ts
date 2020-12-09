@@ -102,7 +102,7 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                 },
                 {
                     name: 'subscriber_id',
-                    type: 'varchar',
+                    type: 'char',
                     length: '36',
                     isNullable: true,
                 },

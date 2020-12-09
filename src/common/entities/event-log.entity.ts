@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { EventEntity } from './event.entity';
 import { SubscriberEntity } from './subscriber.entity';
 
@@ -14,11 +14,11 @@ export class EventLogEntity {
     @Column()
     tries?: number;
 
-    @OneToOne(() => EventEntity)
+    @ManyToOne(() => EventEntity)
     @JoinColumn({ name: 'event_id' })
     event?: EventEntity;
 
-    @OneToOne(() => SubscriberEntity)
+    @ManyToOne(() => SubscriberEntity)
     @JoinColumn({ name: 'subscriber_id' })
     subscriber?: SubscriberEntity;
 }

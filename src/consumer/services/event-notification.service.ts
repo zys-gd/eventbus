@@ -17,6 +17,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
     public async notifySubscribers(event: EventEntity): Promise<Array<void>> {
         const subscriptions: SubscriptionEntity[] = await this.subscriptionEntityRepository.find({
+            relations: ['subscriber'],
             where: [
                 { eventType: event.eventType },
             ]
@@ -24,7 +25,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
         return await Promise.all(
             subscriptions.map(
-                async (subscription) => {
+                async (subscription: SubscriptionEntity) => {
                     let eventLog: EventLogEntity;
                     try {
                         eventLog = await this.eventLogEntityRepository.findOneOrFail({

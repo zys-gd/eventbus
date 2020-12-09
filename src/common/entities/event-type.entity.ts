@@ -1,5 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { SubscriptionEntity } from './subscription.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('event_types')
 export class EventTypeEntity {
@@ -9,7 +8,4 @@ export class EventTypeEntity {
 
     @Column()
     name?: string;
-
-    @OneToMany(() => SubscriptionEntity, subscriptions => subscriptions.eventType)
-    subscriptions?: SubscriptionEntity[];
 }
