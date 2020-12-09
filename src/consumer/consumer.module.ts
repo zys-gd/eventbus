@@ -1,5 +1,5 @@
 import { HttpModule, Logger, Module } from '@nestjs/common';
-import { CommonModule, EventbusConstants } from '../common';
+import { CommonModule, NOTIFICATION_SERVICE } from '../common';
 import { ConsumerController } from './controllers';
 import { EventNotificationService } from './services';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -10,7 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         HttpModule,
         ClientsModule.register([
             {
-                name: EventbusConstants.NOTIFICATION_SERVICE,
+                name: NOTIFICATION_SERVICE,
                 transport: Transport.RMQ,
                 options: {
                     urls: [String(process.env.RABBITMQ_CONNECTION)],

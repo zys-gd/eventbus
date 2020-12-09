@@ -6,7 +6,7 @@ export interface EventNotificationServiceInterface {
      * Method for sending notifications about event to subscribers
      * @param event
      */
-    processEvent(event: EventEntity): Promise<Array<void>>;
+    processEvent(event: EventEntity): Promise<(EventLogEntity | void)[]>;
 
     /**
      * Method for sending notification about event to subscriber

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { compare } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SubscriberEntity } from '../../common';
-import { compare } from 'bcrypt';
 import { AuthServiceInterface } from './auth.service.interface';
 
 @Injectable()

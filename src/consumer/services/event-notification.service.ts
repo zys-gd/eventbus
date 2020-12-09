@@ -1,10 +1,16 @@
 import { HttpService, Inject, Logger } from '@nestjs/common';
 import { EventNotificationServiceInterface } from './event-notification.service.interface';
-import { EventbusConstants, EventEntity, EventLogEntity, SubscriptionEntity } from '../../common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { NotificationDto } from '../dto/notification.dto';
+import {
+    EventEntity,
+    EventLogEntity,
+    NOTIFICATION_QUEUE_PATTERN,
+    NOTIFICATION_SERVICE,
+    SubscriptionEntity,
+} from '../../common';
 
 export class EventNotificationService implements EventNotificationServiceInterface {
     private NOTIFICATION_TRIES_DEFAULT = 3;
@@ -16,7 +22,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         private readonly eventLogEntityRepository: Repository<EventLogEntity>,
         private readonly httpService: HttpService,
         private readonly logger: Logger,
-        @Inject(EventbusConstants.NOTIFICATION_SERVICE)
+        @Inject(NOTIFICATION_SERVICE)
         private readonly client: ClientProxy,
     ) {
     }
@@ -24,7 +30,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
     /**
      * @param event
      */
-    public async processEvent(event: EventEntity): Promise<Array<void>> {
+    public async processEvent(event: EventEntity): Promise<(EventLogEntity | void)[]> {
         const subscriptions: SubscriptionEntity[] = await this.subscriptionEntityRepository.find({
             relations: ['subscriber'],
             where: [
@@ -34,9 +40,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
         return await Promise.all(
             subscriptions.map(
-                async (subscription: SubscriptionEntity) => {
-                    await this.notifySubscriber(event, subscription);
-                }
+                (subscription: SubscriptionEntity) => this.notifySubscriber(event, subscription)
             ),
         );
     }
@@ -107,6 +111,6 @@ export class EventNotificationService implements EventNotificationServiceInterfa
      * @private
      */
     private async pushNotification2Queue(notificationDto: NotificationDto): Promise<void> {
-        this.client.emit<number>(EventbusConstants.NOTIFICATION_QUEUE_PATTERN, notificationDto);
+        this.client.emit<number>(NOTIFICATION_QUEUE_PATTERN, notificationDto);
     }
 }
