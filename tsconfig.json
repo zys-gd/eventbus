@@ -20,5 +20,6 @@
         "strict": true,
         "alwaysStrict": true,
         "paths": {}
-    }
+    },
+    "exclude": ["node_modules", "dist"]
 }

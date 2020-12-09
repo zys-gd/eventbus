@@ -25,6 +25,24 @@ services:
         working_dir: /app
         user: node
         command: ${ENTRYPOINT_CONSUMER}
+        environment:
+            - QUEUE_NAME=${EVENT_QUEUE_NAME}
+        depends_on:
+            - rabbitmq
+        networks:
+            - eventbus
+
+    notification-consumer:
+        container_name: eventbus_notification_consumer
+        restart: always
+        image: library/node:14
+        volumes:
+            - ./:/app
+        working_dir: /app
+        user: node
+        command: ${ENTRYPOINT_CONSUMER}
+        environment:
+            - QUEUE_NAME=${NOTIFICATION_QUEUE_NAME}
         depends_on:
             - rabbitmq
         networks:
