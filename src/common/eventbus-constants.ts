@@ -1,4 +1,7 @@
 export enum EventbusConstants {
-    QUEUE_PATTERN = 'event',
+    EVENT_QUEUE_PATTERN = 'event',
+    NOTIFICATION_QUEUE_PATTERN = 'notification',
     EVENT_SERVICE = 'EVENT_SERVICE',
+    NOTIFICATION_SERVICE = 'NOTIFICATION_SERVICE',
+    NOTIFICATION_TRIES_DEFAULT = 3,
 }

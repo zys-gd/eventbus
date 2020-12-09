@@ -1,11 +1,16 @@
-import { EventEntity } from '../../common';
-import { Observable } from 'rxjs';
+import { EventEntity, SubscriptionEntity } from '../../common';
+import { NotificationDto } from '../dto/notification.dto';
 
 export interface EventNotificationServiceInterface {
     /**
      * Method for sending notifications about event to subscribers
      * @param event
      */
-    // notifySubscribers(event: EventEntity): Promise<Observable<any>[]>;
-    notifySubscribers(event: EventEntity): Promise<Array<void>>;
+    processEvent(event: EventEntity): Promise<Array<void>>;
+
+    /**
+     * Method for sending notification about event to subscriber
+     * @param notificationDto
+     */
+    processNotification(notificationDto: NotificationDto): Promise<void>;
 }

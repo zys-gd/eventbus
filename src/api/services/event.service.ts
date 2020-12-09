@@ -32,6 +32,6 @@ export class EventService implements EventServiceInterface {
             eventType,
         });
 
-        this.client.emit<number>(EventbusConstants.QUEUE_PATTERN, event);
+        this.client.emit<number>(EventbusConstants.EVENT_QUEUE_PATTERN, event);
     }
 }
