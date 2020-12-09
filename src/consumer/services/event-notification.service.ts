@@ -44,7 +44,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
     /**
      * @param notificationDto
      */
-    public async processNotification(notificationDto: NotificationDto): Promise<void> {
+    public async processNotification(notificationDto: NotificationDto): Promise<EventLogEntity | void> {
         const subscription: SubscriptionEntity = await this.subscriptionEntityRepository.findOneOrFail({
             relations: ['subscriber'],
             where: [
@@ -56,7 +56,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         });
 
         if (notificationDto.tries <= (process.env.NOTIFICATION_TRIES || this.NOTIFICATION_TRIES_DEFAULT)) {
-            await this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries);
+            return this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries);
         }
     }
 
@@ -66,7 +66,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
      * @param tries
      * @private
      */
-    private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<void> {
+    private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<EventLogEntity | void> {
         let eventLog: EventLogEntity;
 
         try {
@@ -93,13 +93,12 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
             if (response.status === 200) {
                 eventLog.deliveryDatetime = new Date();
-                await this.eventLogEntityRepository.save(eventLog);
-            } else {
-                this.pushNotification2Queue(notificationDto);
+                return this.eventLogEntityRepository.save(eventLog);
             }
+            return this.pushNotification2Queue(notificationDto);
         } catch (e) {
             await this.eventLogEntityRepository.save(eventLog);
-            this.pushNotification2Queue(notificationDto);
+            return this.pushNotification2Queue(notificationDto);
         }
     }
 
@@ -107,7 +106,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
      * @param notificationDto
      * @private
      */
-    private pushNotification2Queue(notificationDto: NotificationDto) {
+    private async pushNotification2Queue(notificationDto: NotificationDto): Promise<void> {
         this.client.emit<number>(EventbusConstants.NOTIFICATION_QUEUE_PATTERN, notificationDto);
     }
 }

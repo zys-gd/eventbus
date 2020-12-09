@@ -1,4 +1,4 @@
-import { EventEntity } from '../../common';
+import { EventEntity, EventLogEntity } from '../../common';
 import { NotificationDto } from '../dto/notification.dto';
 
 export interface EventNotificationServiceInterface {
@@ -12,5 +12,5 @@ export interface EventNotificationServiceInterface {
      * Method for sending notification about event to subscriber
      * @param notificationDto
      */
-    processNotification(notificationDto: NotificationDto): Promise<void>;
+    processNotification(notificationDto: NotificationDto): Promise<EventLogEntity | void>;
 }
