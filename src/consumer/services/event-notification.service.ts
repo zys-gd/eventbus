@@ -75,16 +75,13 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                     { subscriber: subscription.subscriber, event },
                 ]
             });
-            if (typeof eventLog.tries === 'undefined') {
-                eventLog.tries = tries;
-            }
-            eventLog.tries = tries;
         } catch (e) {
             eventLog = new EventLogEntity();
             eventLog.subscriber = subscription.subscriber;
             eventLog.event = event;
-            eventLog.tries = tries;
         }
+
+        eventLog.tries = tries;
 
         const notificationDto: NotificationDto = new NotificationDto(event, tries + 1, subscription.subscriber);
 
