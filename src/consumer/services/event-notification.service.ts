@@ -7,6 +7,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { NotificationDto } from '../dto/notification.dto';
 
 export class EventNotificationService implements EventNotificationServiceInterface {
+    private NOTIFICATION_TRIES_DEFAULT = 3;
+
     constructor(
         @InjectRepository(SubscriptionEntity)
         private readonly subscriptionEntityRepository: Repository<SubscriptionEntity>,
@@ -46,7 +48,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                 },
             ]
         });
-        if (notificationDto.tries < (process.env.NOTIFICATION_TRIES || EventbusConstants.NOTIFICATION_TRIES_DEFAULT)) {
+        if (notificationDto.tries < (process.env.NOTIFICATION_TRIES || this.NOTIFICATION_TRIES_DEFAULT)) {
             await this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries + 1);
         }
     }
