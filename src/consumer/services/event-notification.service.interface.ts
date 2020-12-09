@@ -1,4 +1,4 @@
-import { EventEntity, SubscriptionEntity } from '../../common';
+import { EventEntity } from '../../common';
 import { NotificationDto } from '../dto/notification.dto';
 
 export interface EventNotificationServiceInterface {
