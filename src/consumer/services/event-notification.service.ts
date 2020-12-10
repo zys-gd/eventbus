@@ -1,10 +1,12 @@
-import { HttpService, Inject, Logger } from '@nestjs/common';
+import { HttpService, Inject, Injectable } from '@nestjs/common';
+import winston from 'winston';
 import { EventNotificationServiceInterface } from './event-notification.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ClientProxy } from '@nestjs/microservices';
 import { NotificationDto } from '../dto/notification.dto';
 import {
+    EVENTBUS_LOGGER,
     EventEntity,
     EventLogEntity,
     NOTIFICATION_QUEUE_PATTERN,
@@ -12,8 +14,8 @@ import {
     SubscriptionEntity,
 } from '../../common';
 
+@Injectable()
 export class EventNotificationService implements EventNotificationServiceInterface {
-    private NOTIFICATION_TRIES_DEFAULT = 3;
 
     constructor(
         @InjectRepository(SubscriptionEntity)
@@ -21,7 +23,8 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         @InjectRepository(EventLogEntity)
         private readonly eventLogEntityRepository: Repository<EventLogEntity>,
         private readonly httpService: HttpService,
-        private readonly logger: Logger,
+        @Inject(EVENTBUS_LOGGER)
+        private readonly logger: winston.Logger,
         @Inject(NOTIFICATION_SERVICE)
         private readonly client: ClientProxy,
     ) {
@@ -59,9 +62,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
             ]
         });
 
-        if (notificationDto.tries <= (process.env.NOTIFICATION_TRIES || this.NOTIFICATION_TRIES_DEFAULT)) {
-            return this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries);
-        }
+        return this.notifySubscriber(notificationDto.event, subscription, notificationDto.tries);
     }
 
     /**
@@ -71,6 +72,10 @@ export class EventNotificationService implements EventNotificationServiceInterfa
      * @private
      */
     private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<EventLogEntity | void> {
+        this.logger.debug('Starting EventNotificationService::notifySubscriber');
+        this.logger.debug('EventEntity: %s', JSON.stringify(event));
+        this.logger.debug('SubscriptionEntity: %s', JSON.stringify(subscription));
+
         let eventLog: EventLogEntity;
 
         try {
@@ -97,11 +102,24 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
             if (response.status === 200) {
                 eventLog.deliveryDatetime = new Date();
+
+                this.logger.debug('EventNotificationService::notifySubscriber: Success sending request to subscriber.');
+
                 return this.eventLogEntityRepository.save(eventLog);
             }
+
+            this.logger.debug('EventNotificationService::notifySubscriber: Wrong HTTP code while sending request to subscriber.');
+
             return this.pushNotification2Queue(notificationDto);
         } catch (e) {
             await this.eventLogEntityRepository.save(eventLog);
+
+            this.logger.debug(
+                'EventNotificationService::notifySubscriber: Error while sending request to subscriber. HTTP code: "%s", HTTP status: "%s"',
+                e.response.status,
+                e.response.statusText
+            );
+
             return this.pushNotification2Queue(notificationDto);
         }
     }

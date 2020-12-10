@@ -14,6 +14,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
             },
         },
     });
-    // eslint-disable-next-line no-console
-    app.listen(() => console.log('Microservice is listening'));
+    app.listen(() => {
+        return;
+    });
 })();

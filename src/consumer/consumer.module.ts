@@ -1,4 +1,4 @@
-import { HttpModule, Logger, Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { CommonModule, NOTIFICATION_SERVICE } from '../common';
 import { ConsumerController } from './controllers';
 import { EventNotificationService } from './services';
@@ -27,8 +27,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         ConsumerController
     ],
     providers: [
-        EventNotificationService,
-        Logger,
+        {
+            provide: 'EventNotificationService',
+            useClass: EventNotificationService,
+        },
     ],
 })
 export class ConsumerModule {

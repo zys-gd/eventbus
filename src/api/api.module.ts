@@ -28,10 +28,19 @@ import { HashStrategy } from './strategies';
         SubscribeController,
     ],
     providers: [
-        EventService,
-        SubscribeService,
-        AuthService,
-        HashStrategy
+        {
+            provide: 'EventService',
+            useClass: EventService,
+        },
+        {
+            provide: 'SubscribeService',
+            useClass: SubscribeService,
+        },
+        {
+            provide: 'AuthService',
+            useClass: AuthService,
+        },
+        HashStrategy,
     ],
     exports: [],
 })
