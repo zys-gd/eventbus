@@ -6,7 +6,7 @@ import { AuthServiceInterface } from '../services';
 @Injectable()
 export class HashStrategy extends PassportStrategy(Strategy, 'hash') {
     constructor (
-        @Inject('AuthServiceInterface')
+        @Inject('AuthService')
         private authService: AuthServiceInterface,
     ) {
         super();

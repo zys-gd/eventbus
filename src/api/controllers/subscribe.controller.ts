@@ -9,7 +9,7 @@ import winston from 'winston';
 export class SubscribeController {
 
     constructor(
-        @Inject('SubscribeServiceInterface')
+        @Inject('SubscribeService')
         private readonly subscribeService: SubscribeServiceInterface,
         @Inject(EVENTBUS_LOGGER)
         private readonly logger: winston.Logger,

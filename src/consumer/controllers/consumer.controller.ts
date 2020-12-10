@@ -14,7 +14,7 @@ import { EventNotificationServiceInterface } from '../services/event-notificatio
 @Controller()
 export class ConsumerController {
     constructor(
-        @Inject('EventNotificationServiceInterface')
+        @Inject('EventNotificationService')
         private readonly eventNotificationService: EventNotificationServiceInterface,
         @Inject(EVENTBUS_LOGGER)
         private readonly logger: winston.Logger,

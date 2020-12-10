@@ -28,7 +28,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ],
     providers: [
         {
-            provide: 'EventNotificationServiceInterface',
+            provide: 'EventNotificationService',
             useClass: EventNotificationService,
         },
     ],

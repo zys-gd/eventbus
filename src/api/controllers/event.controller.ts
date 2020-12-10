@@ -9,11 +9,12 @@ import winston from 'winston';
 export class EventController {
 
     constructor(
-        @Inject('EventServiceInterface')
+        @Inject('EventService')
         private readonly eventService: EventServiceInterface,
         @Inject(EVENTBUS_LOGGER)
         private readonly logger: winston.Logger,
     ) {}
+
 
     @UseGuards(AuthGuard('hash'))
     @Post()

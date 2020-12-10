@@ -29,15 +29,15 @@ import { HashStrategy } from './strategies';
     ],
     providers: [
         {
-            provide: 'EventServiceInterface',
+            provide: 'EventService',
             useClass: EventService,
         },
         {
-            provide: 'SubscribeServiceInterface',
+            provide: 'SubscribeService',
             useClass: SubscribeService,
         },
         {
-            provide: 'AuthServiceInterface',
+            provide: 'AuthService',
             useClass: AuthService,
         },
         HashStrategy,
