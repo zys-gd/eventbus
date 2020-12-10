@@ -32,6 +32,7 @@ export class ConsumerController {
     @EventPattern(NOTIFICATION_QUEUE_PATTERN)
     public async notifyAction(@Payload() notificationDto: NotificationDto, @Ctx() context: RmqContext) {
         this.logger.debug('Starting ConsumerController::notifyAction');
+
         if (notificationDto.tries <= (process.env.NOTIFICATION_TRIES || NOTIFICATION_TRIES_DEFAULT)) {
             await this.eventNotificationService.processNotification(notificationDto);
         }
