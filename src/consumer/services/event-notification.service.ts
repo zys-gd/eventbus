@@ -1,4 +1,4 @@
-import { HttpService, Inject, Logger } from '@nestjs/common';
+import { HttpService, Inject, Injectable, Logger } from '@nestjs/common';
 import { EventNotificationServiceInterface } from './event-notification.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,6 +12,7 @@ import {
     SubscriptionEntity,
 } from '../../common';
 
+@Injectable()
 export class EventNotificationService implements EventNotificationServiceInterface {
     private NOTIFICATION_TRIES_DEFAULT = 3;
 
