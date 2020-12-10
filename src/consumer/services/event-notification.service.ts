@@ -1,4 +1,5 @@
 import { HttpService, Inject, Injectable } from '@nestjs/common';
+import winston from 'winston';
 import { EventNotificationServiceInterface } from './event-notification.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,7 +13,6 @@ import {
     NOTIFICATION_SERVICE,
     SubscriptionEntity,
 } from '../../common';
-import winston from 'winston';
 
 @Injectable()
 export class EventNotificationService implements EventNotificationServiceInterface {
