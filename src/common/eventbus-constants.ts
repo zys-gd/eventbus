@@ -2,4 +2,6 @@ export const EVENT_QUEUE_PATTERN = 'event';
 export const NOTIFICATION_QUEUE_PATTERN = 'notification';
 export const EVENT_SERVICE = 'EVENT_SERVICE';
 export const NOTIFICATION_SERVICE = 'NOTIFICATION_SERVICE';
+export const EVENTBUS_LOGGER = 'EVENTBUS_LOGGER';
+export const NOTIFICATION_TRIES_DEFAULT = 3;
 
