@@ -1,13 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { EVENT_QUEUE_PATTERN, EventEntity, NOTIFICATION_QUEUE_PATTERN } from '../../common';
-import { EventNotificationService } from '../services';
 import { NotificationDto } from '../dto/notification.dto';
+import { EventNotificationServiceInterface } from '../services/event-notification.service.interface';
 
 @Controller()
 export class ConsumerController {
     constructor(
-        private readonly eventNotificationService: EventNotificationService,
+        @Inject('EventNotificationServiceInterface')
+        private readonly eventNotificationService: EventNotificationServiceInterface,
     ) {}
 
     @EventPattern(EVENT_QUEUE_PATTERN)

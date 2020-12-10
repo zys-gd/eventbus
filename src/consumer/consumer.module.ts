@@ -27,8 +27,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         ConsumerController
     ],
     providers: [
-        EventNotificationService,
         Logger,
+        {
+            provide: 'EventNotificationServiceInterface',
+            useClass: EventNotificationService,
+        }
     ],
 })
 export class ConsumerModule {

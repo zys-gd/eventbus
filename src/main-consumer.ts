@@ -3,7 +3,7 @@ import { ConsumerModule } from './consumer';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 (async function () {
-    await NestFactory.createMicroservice<MicroserviceOptions>(ConsumerModule, {
+    const app = await NestFactory.createMicroservice<MicroserviceOptions>(ConsumerModule, {
         transport: Transport.RMQ,
         options: {
             urls: [String(process.env.RABBITMQ_CONNECTION)],
@@ -13,5 +13,8 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
                 durable: true
             },
         },
+    });
+    app.listen(() => {
+        return;
     });
 })();
