@@ -4,6 +4,7 @@ import { CommonModule, EVENT_SERVICE } from '../common';
 import { EventController, SubscribeController } from './controllers';
 import { AuthService, EventService, SubscribeService } from './services';
 import { HashStrategy } from './strategies';
+import { EventNotificationService } from '../consumer/services';
 
 @Module({
     imports: [
@@ -28,10 +29,19 @@ import { HashStrategy } from './strategies';
         SubscribeController,
     ],
     providers: [
-        EventService,
-        SubscribeService,
-        AuthService,
-        HashStrategy
+        {
+            provide: 'EventServiceInterface',
+            useClass: EventService,
+        },
+        {
+            provide: 'SubscribeServiceInterface',
+            useClass: SubscribeService,
+        },
+        {
+            provide: 'AuthServiceInterface',
+            useClass: AuthService,
+        },
+        HashStrategy,
     ],
     exports: [],
 })

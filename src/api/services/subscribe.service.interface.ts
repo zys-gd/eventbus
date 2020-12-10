@@ -1,4 +1,4 @@
-import { SubscribeDto } from '../dto';
+import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { SubscriberEntity, SubscriptionEntity } from '../../common';
 
 export interface SubscribeServiceInterface {
@@ -14,5 +14,5 @@ export interface SubscribeServiceInterface {
      * @param subscribeDto
      * @param subscriber
      */
-    unsubscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<void>;
+    unsubscribe(subscribeDto: UnsubscribeDto, subscriber: SubscriberEntity): Promise<void>;
 }

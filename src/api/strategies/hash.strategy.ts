@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-strategy';
-import { AuthService } from '../services';
+import { AuthServiceInterface } from '../services';
 
 @Injectable()
 export class HashStrategy extends PassportStrategy(Strategy, 'hash') {
     constructor (
-        private authService: AuthService,
+        @Inject('AuthServiceInterface')
+        private authService: AuthServiceInterface,
     ) {
         super();
     }

@@ -1,14 +1,15 @@
-import { Body, Controller, Delete, HttpStatus, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, HttpStatus, Inject, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
-import { SubscribeService } from '../services';
 import { SubscriberEntity } from '../../common';
+import { SubscribeServiceInterface } from '../services';
 
 @Controller('subscribe')
 export class SubscribeController {
 
     constructor(
-        private readonly subscribeService: SubscribeService,
+        @Inject('SubscribeServiceInterface')
+        private readonly subscribeService: SubscribeServiceInterface,
     ) {}
 
     @UseGuards(AuthGuard('hash'))

@@ -1,13 +1,14 @@
-import { Body, Controller, HttpStatus, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Post, Res, UseGuards } from '@nestjs/common';
 import { EventDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
-import { EventService } from '../services';
+import { EventServiceInterface } from '../services';
 
 @Controller('event')
 export class EventController {
 
     constructor(
-        private readonly eventService: EventService,
+        @Inject('EventServiceInterface')
+        private readonly eventService: EventServiceInterface,
     ) {}
 
     @UseGuards(AuthGuard('hash'))
