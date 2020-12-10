@@ -72,7 +72,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
      * @private
      */
     private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<EventLogEntity | void> {
-        this.logger.debug('Starting notifySubscriber');
+        this.logger.debug('Starting EventNotificationService::notifySubscriber');
         this.logger.debug('EventEntity: %s', JSON.stringify(event));
         this.logger.debug('SubscriptionEntity: %s', JSON.stringify(subscription));
 
@@ -103,19 +103,19 @@ export class EventNotificationService implements EventNotificationServiceInterfa
             if (response.status === 200) {
                 eventLog.deliveryDatetime = new Date();
 
-                this.logger.debug('notifySubscriber: Success sending request to subscriber.');
+                this.logger.debug('EventNotificationService::notifySubscriber: Success sending request to subscriber.');
 
                 return this.eventLogEntityRepository.save(eventLog);
             }
 
-            this.logger.debug('notifySubscriber: Wrong HTTP code while sending request to subscriber.');
+            this.logger.debug('EventNotificationService::notifySubscriber: Wrong HTTP code while sending request to subscriber.');
 
             return this.pushNotification2Queue(notificationDto);
         } catch (e) {
             await this.eventLogEntityRepository.save(eventLog);
 
             this.logger.debug(
-                'notifySubscriber: Error while sending request to subscriber. HTTP code: "%s", HTTP status: "%s"',
+                'EventNotificationService::notifySubscriber: Error while sending request to subscriber. HTTP code: "%s", HTTP status: "%s"',
                 e.response.status,
                 e.response.statusText
             );

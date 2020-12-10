@@ -23,19 +23,19 @@ export class ConsumerController {
 
     @EventPattern(EVENT_QUEUE_PATTERN)
     public async processingEventAction(@Payload() eventEntity: EventEntity, @Ctx() context: RmqContext) {
-        this.logger.debug('Starting processingEventAction');
+        this.logger.debug('Starting ConsumerController::processingEventAction');
         await this.eventNotificationService.processEvent(eventEntity);
         context.getChannelRef().ack(context.getMessage());
-        this.logger.debug('Finishing processingEventAction');
+        this.logger.debug('Finishing ConsumerController::processingEventAction');
     }
 
     @EventPattern(NOTIFICATION_QUEUE_PATTERN)
     public async notifyAction(@Payload() notificationDto: NotificationDto, @Ctx() context: RmqContext) {
-        this.logger.debug('Starting notifyAction');
+        this.logger.debug('Starting ConsumerController::notifyAction');
         if (notificationDto.tries <= (process.env.NOTIFICATION_TRIES || NOTIFICATION_TRIES_DEFAULT)) {
             await this.eventNotificationService.processNotification(notificationDto);
         }
         context.getChannelRef().ack(context.getMessage());
-        this.logger.debug('Finishing notifyAction');
+        this.logger.debug('Finishing ConsumerController::notifyAction');
     }
 }
