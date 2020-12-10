@@ -1,7 +1,5 @@
-import { HttpModule, Logger, Module } from '@nestjs/common';
-import { CommonModule, EVENTBUS_LOGGER, NOTIFICATION_SERVICE } from '../common';
-import * as winston from 'winston';
-import { format } from 'winston';
+import { HttpModule, Module } from '@nestjs/common';
+import { CommonModule, NOTIFICATION_SERVICE } from '../common';
 import { ConsumerController } from './controllers';
 import { EventNotificationService } from './services';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -29,25 +27,9 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         ConsumerController
     ],
     providers: [
-        Logger,
         {
             provide: 'EventNotificationServiceInterface',
             useClass: EventNotificationService,
-        },
-        {
-            provide: EVENTBUS_LOGGER,
-            useFactory: (): winston.Logger => {
-                return winston.createLogger({
-                    level: 'silly',
-                    format: format.combine(
-                        format.splat(),
-                        format.simple()
-                    ),
-                    transports: [
-                        new winston.transports.Console(),
-                    ]
-                });
-            },
         },
     ],
 })
