@@ -28,7 +28,11 @@ Go to Ubuntu and clone project **inside** it.
 
 
 ## Running the app
-Application start automatically with docker containers
+Firstly, you need to copy `docker-compose.override.dist.yml` to `docker-compose.override.yml`.
+Secondly, you are supposed to make here own customisation and optimisation docker under your system and environments (e.g. set network settings).
+Thirdly, copy `.env.dist` to `.env` and modify it. 
+
+Application start automatically with docker containers. You can start it manually as well with commands (see package.json):
 ```bash
 # development
 $ npm run start:consumer:dev
