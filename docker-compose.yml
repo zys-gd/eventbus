@@ -85,14 +85,14 @@ services:
             - eventbus
 
     apidoc:
-        image: redocly/redoc
+        image: swaggerapi/swagger-ui
         restart: on-failure
         ports:
-            - 3001:80
+            - 3001:8080
         volumes:
             - ./documentation/:/usr/share/nginx/html/documentation/
         environment:
-            SPEC_URL: ./documentation/apidoc.yml
+            URLS: "[ { url: './documentation/apidoc.yml', name: 'EventBus Service' } ]"
         networks:
             - eventbus
 
