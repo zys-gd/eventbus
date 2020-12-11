@@ -2,6 +2,7 @@
 [NODEJS-LINK]: https://nodejs.org/uk/
 [DOCKER-LINK]: https://docs.docker.com/install/
 [DOCKERCOMPOSE-LINK]: https://docs.docker.com/compose/install/
+[POSTMAN_COLLECTION]: https://www.getpostman.com/collections/8f60b3d23a157b68c50c
 # Eventbus
 
 ## Description
@@ -40,7 +41,9 @@ $ npm run start:api:dev
 ```
 
 ## Test
+For testing endpoints use this [requests][POSTMAN_COLLECTION] as example.
 
+Run automation tests:
 ```bash
 # unit tests
 $ npm run test
