@@ -87,25 +87,30 @@ paths:
 #                  required: true
 #                  schema:
 #                      type: string
+#                      example: application/json
 #                - name: apiKey
 #                  in: header
 #                  description: Implementation key.
 #                  required: true
 #                  schema:
 #                      type: string
+#                      example: qwerty123
 #                - name: hash
 #                  in: header
 #                  description: Hash of the event.
 #                  required: true
 #                  schema:
 #                      type: string
+#                      example: $2a$10$F5/5yJUExWBSgDA6zKNdIOthL2yAEpHiMatocu2kolzUEiUG.shBu
 #            requestBody:
 #                required: true
 #                description: Event
 #                content:
 #                    application/json:
+#                        example:
+#                            eventType: test_type
+#                            notificationUrl: 192.168.120.6
 #                        schema:
-#                            example: '{"eventType":"test_type","notificationUrl":"192.168.120.6"}'
 #                            type: json
 #                            $ref: '#/components/schemas/SubscribeDto'
 #            responses:
@@ -123,25 +128,29 @@ paths:
 #                  required: true
 #                  schema:
 #                      type: string
+#                      example: application/json
 #                - name: apiKey
 #                  in: header
 #                  description: Implementation key.
 #                  required: true
 #                  schema:
 #                      type: string
+#                      example: qwerty123
 #                - name: hash
 #                  in: header
 #                  description: Hash of the event.
 #                  required: true
 #                  schema:
 #                      type: string
+#                      example: $2a$10$F5/5yJUExWBSgDA6zKNdIOthL2yAEpHiMatocu2kolzUEiUG.shBu
 #            requestBody:
 #                required: true
 #                description: Event
 #                content:
 #                    application/json:
+#                        example:
+#                            eventType: test_type
 #                        schema:
-#                            example: '{"eventType":"test_type"}'
 #                            type: json
 #                            $ref: '#/components/schemas/UnsubscribeDto'
 #            responses:
