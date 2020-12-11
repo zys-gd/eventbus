@@ -152,7 +152,7 @@ paths:
                       type: string
                       example: test_type
             responses:
-                '202':
-                    description: Subscription was removed.
                 '204':
-                    description: Subscription already removed.
+                    description: Subscription was removed.
+                '404':
+                    description: Subscription already removed or not found.

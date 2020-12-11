@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import { SubscribeDto, UnsubscribeDto } from '../dto';
+import { SubscribeDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventTypeEntity, SubscriberEntity, SubscriptionEntity } from '../../common';
@@ -12,10 +12,10 @@ export class SubscribeService implements SubscribeServiceInterface {
     constructor(
         @InjectRepository(SubscriptionEntity)
         private readonly subscriptionEntityRepository: Repository<SubscriptionEntity>,
-
         @InjectRepository(EventTypeEntity)
         private readonly eventTypeEntityRepository: Repository<EventTypeEntity>,
-    ) {}
+    ) {
+    }
 
     public async subscribe(subscribeDto: SubscribeDto, subscriber: SubscriberEntity): Promise<SubscriptionEntity> {
         const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
@@ -37,7 +37,8 @@ export class SubscribeService implements SubscribeServiceInterface {
             if (existingSubscription != 0) {
                 throw new Error('Subscription already exists');
             }
-        } catch (e) {}
+        } catch (e) {
+        }
 
         const subscription: SubscriptionEntity = new SubscriptionEntity();
         subscription.uuid = uuid();
@@ -49,15 +50,19 @@ export class SubscribeService implements SubscribeServiceInterface {
         return subscription;
     }
 
-    public async unsubscribe(unsubscribeDto: UnsubscribeDto, subscriber: SubscriberEntity): Promise<void> {
-        const eventType: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
+    public async unsubscribe(eventType: string, subscriber: SubscriberEntity): Promise<void> {
+        const eventTypeEntity: EventTypeEntity = await this.eventTypeEntityRepository.findOneOrFail({
             where: [
-                { name: unsubscribeDto.eventType },
+                { name: eventType },
             ]
         });
-        await this.subscriptionEntityRepository.delete({
-            eventType: eventType,
+        const res = await this.subscriptionEntityRepository.delete({
+            eventType: eventTypeEntity,
             subscriber: subscriber
         });
+
+        if (res.affected === 0) {
+            throw new Error();
+        }
     }
 }

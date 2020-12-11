@@ -1,11 +1,11 @@
-import { Body, Controller, Delete, HttpStatus, Inject, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, HttpStatus, Inject, Param, Put, Req, Res, UseGuards } from '@nestjs/common';
 import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EVENTBUS_LOGGER, SubscriberEntity } from '../../common';
 import { SubscribeServiceInterface } from '../services';
 import winston from 'winston';
 
-@Controller('subscribe')
+@Controller('subscription')
 export class SubscribeController {
 
     constructor(
@@ -13,7 +13,8 @@ export class SubscribeController {
         private readonly subscribeService: SubscribeServiceInterface,
         @Inject(EVENTBUS_LOGGER)
         private readonly logger: winston.Logger,
-    ) {}
+    ) {
+    }
 
     @UseGuards(AuthGuard('hash'))
     @Put()
@@ -28,29 +29,27 @@ export class SubscribeController {
         try {
             await this.subscribeService.subscribe(subscribeDto, req.user);
             res.status(HttpStatus.CREATED).send();
-        }
-        catch(e) {
+        } catch (e) {
             res.status(HttpStatus.CONFLICT).send();
         }
         this.logger.debug('Finishing SubscribeController::subscribeAction');
     }
 
-    @UseGuards(AuthGuard('hash'))
-    @Delete()
+    @UseGuards(AuthGuard('apiKey'))
+    @Delete(':eventType')
     public async unsubscribeAction(
-        @Body() unsubscribeDto: UnsubscribeDto,
         @Req() req: { user: SubscriberEntity },
         @Res() res: any,
+        @Param() params: any,
     ) {
         this.logger.debug('Starting SubscribeController::unsubscribeAction');
         this.logger.debug('SubscribeDto: %s', JSON.stringify(UnsubscribeDto));
 
         try {
-            await this.subscribeService.unsubscribe(unsubscribeDto, req.user);
-            res.status(HttpStatus.ACCEPTED).json([]);
-        }
-        catch(e) {
+            await this.subscribeService.unsubscribe(params.eventType, req.user);
             res.status(HttpStatus.NO_CONTENT).send();
+        } catch (e) {
+            res.status(HttpStatus.NOT_FOUND).send();
         }
         this.logger.debug('Finishing SubscribeController::unsubscribeAction');
     }

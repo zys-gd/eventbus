@@ -1,4 +1,4 @@
-import { SubscribeDto, UnsubscribeDto } from '../dto';
+import { SubscribeDto } from '../dto';
 import { SubscriberEntity, SubscriptionEntity } from '../../common';
 
 export interface SubscribeServiceInterface {
@@ -11,8 +11,8 @@ export interface SubscribeServiceInterface {
 
     /**
      * Method for removing subscription
-     * @param subscribeDto
+     * @param eventType
      * @param subscriber
      */
-    unsubscribe(subscribeDto: UnsubscribeDto, subscriber: SubscriberEntity): Promise<void>;
+    unsubscribe(eventType: string, subscriber: SubscriberEntity): Promise<void>;
 }
