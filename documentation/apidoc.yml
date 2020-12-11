@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+    title: Toplyvo gateway
+    description: Eventbus for subscribing on events between microservices
+    version: '1.0'
+    contact: {}
+tags: []
+servers: []
+components:
+    schemas:
+        Event:
+            type: object
+            properties:
+                eventType:
+                    type: string
+                data:
+                    type: string
+            required:
+                - eventType
+                - data
+#        SubscribeDto:
+#            type: object
+#            properties:
+#                eventType:
+#                    type: string
+#                notificationUrl:
+#                    type: string
+#            required:
+#                - eventType
+#                - notificationUrl
+#        UnsubscribeDto:
+#            type: object
+#            properties:
+#                eventType:
+#                    type: string
+#            required:
+#                - eventType
+paths:
+    /api/event:
+        post:
+            operationId: EventController_makeAction
+            summary: Post event
+            parameters:
+                - name: Content-Type
+                  in: header
+                  description: Must be set to "application/json".
+                  required: true
+                  schema:
+                      type: string
+                      example: application/json
+                - name: apiKey
+                  in: header
+                  description: Implementation key.
+                  required: true
+                  schema:
+                      type: string
+                      example: qwerty123
+                - name: hash
+                  in: header
+                  description: Hash of the event.
+                  required: true
+                  schema:
+                      type: string
+                      example: $2a$10$F5/5yJUExWBSgDA6zKNdIOthL2yAEpHiMatocu2kolzUEiUG.shBu
+            requestBody:
+                required: true
+                description: Pay attention on order of keys in json body. It is important for calculating hash. You must keep the same ones.
+                content:
+                    application/json:
+                        example:
+                            eventType: test_type
+                            data: { "some_key": "test data string" }
+                        schema:
+                            type: json
+                            $ref: '#/components/schemas/Event'
+            responses:
+                '201':
+                    description: Event was posted.
+#    /api/subscription:
+#        put:
+#            operationId: SubscribeController_subscribeAction
+#            summary: Subscribe to event
+#            parameters:
+#                - name: Content-Type
+#                  in: header
+#                  description: Must be set to "application/json".
+#                  required: true
+#                  schema:
+#                      type: string
+#                - name: apiKey
+#                  in: header
+#                  description: Implementation key.
+#                  required: true
+#                  schema:
+#                      type: string
+#                - name: hash
+#                  in: header
+#                  description: Hash of the event.
+#                  required: true
+#                  schema:
+#                      type: string
+#            requestBody:
+#                required: true
+#                description: Event
+#                content:
+#                    application/json:
+#                        schema:
+#                            example: '{"eventType":"test_type","notificationUrl":"192.168.120.6"}'
+#                            type: json
+#                            $ref: '#/components/schemas/SubscribeDto'
+#            responses:
+#                '201':
+#                    description: Event was posted.
+#                '409':
+#                    description: Subscription already exist.
+#        delete:
+#            operationId: SubscribeController_unsubscribeAction
+#            summary: Unsubscribe from event
+#            parameters:
+#                - name: Content-Type
+#                  in: header
+#                  description: Must be set to "application/json".
+#                  required: true
+#                  schema:
+#                      type: string
+#                - name: apiKey
+#                  in: header
+#                  description: Implementation key.
+#                  required: true
+#                  schema:
+#                      type: string
+#                - name: hash
+#                  in: header
+#                  description: Hash of the event.
+#                  required: true
+#                  schema:
+#                      type: string
+#            requestBody:
+#                required: true
+#                description: Event
+#                content:
+#                    application/json:
+#                        schema:
+#                            example: '{"eventType":"test_type"}'
+#                            type: json
+#                            $ref: '#/components/schemas/UnsubscribeDto'
+#            responses:
+#                '202':
+#                    description: Subscription was removed.
+#                '204':
+#                    description: Subscription already removed.

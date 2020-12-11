@@ -16,7 +16,7 @@ services:
         networks:
             - eventbus
 
-    node-consumer:
+    event-consumer:
         container_name: eventbus_node_consumer
         restart: always
         image: library/node:14
@@ -81,6 +81,18 @@ services:
             interval: 10s
             timeout: 10s
             retries: 5
+        networks:
+            - eventbus
+
+    apidoc:
+        image: redocly/redoc
+        restart: on-failure
+        ports:
+            - 3001:80
+        volumes:
+            - ./documentation/:/usr/share/nginx/html/documentation/
+        environment:
+            SPEC_URL: ./documentation/apidoc.yml
         networks:
             - eventbus
 
