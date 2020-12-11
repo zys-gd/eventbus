@@ -3,7 +3,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CommonModule, EVENT_SERVICE } from '../common';
 import { EventController, SubscribeController } from './controllers';
 import { AuthService, EventService, SubscribeService } from './services';
-import { HashStrategy } from './strategies';
+import { HashStrategy, TokenStrategy } from './strategies';
 
 @Module({
     imports: [
@@ -41,6 +41,7 @@ import { HashStrategy } from './strategies';
             useClass: AuthService,
         },
         HashStrategy,
+        TokenStrategy,
     ],
     exports: [],
 })

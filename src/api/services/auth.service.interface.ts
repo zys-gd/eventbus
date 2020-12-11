@@ -8,4 +8,11 @@ export interface AuthServiceInterface {
      * @param requestHash
      */
     validateHash(apiKey: string, event: string, requestHash: string): Promise<SubscriberEntity | undefined>;
+
+    /**
+     * validate API Key access
+     * @param apiKey
+     * @param requestHash
+     */
+    validateApiKey(apiKey: string, requestHash: string): Promise<SubscriberEntity | undefined>;
 }
