@@ -40,6 +40,17 @@ $ npm run start:consumer:dev
 $ npm run start:api:dev
 ```
 
+## Requests signature
+Each request must be signed by hash. There are two types of hash creating:
+1. If request has a body, bcrypt concatenation's result of body and secret
+    ```
+    bcrypt.hashSync('{"eventType":"test_type","data":{"123":"test data string"}}' + 'secret', 10);
+    ```
+2. If request hasn't body, bcrypt concatenation's result of apiKey and secret
+    ```
+    bcrypt.hashSync('apiKey123' + 'secret321', 10);
+    ```
+You should get hash (e.g `$2a$10$F5/5yJUExWBSgDA6zKNdIOthL2yAEpHiMatocu2kolzUEiUG.shBu`) and pass it to requirement header `hash`
 ## Test
 For testing endpoints use this [requests][POSTMAN_COLLECTION] as example.
 
