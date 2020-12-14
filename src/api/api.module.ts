@@ -16,9 +16,7 @@ import { HashStrategy, TokenStrategy } from './strategies';
                     urls: [String(process.env.RABBITMQ_CONNECTION)],
                     queue: process.env.EVENT_QUEUE_NAME || '',
                     noAck: false,
-                    queueOptions: {
-                        durable: true
-                    },
+                    persistent: true,
                 },
             },
         ])
