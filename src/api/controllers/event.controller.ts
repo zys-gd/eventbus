@@ -3,7 +3,7 @@ import { EventDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EventServiceInterface } from '../services';
 import { EVENTBUS_LOGGER } from '../../common';
-import winston from 'winston';
+import { Logger } from 'winston';
 
 @Controller('event')
 export class EventController {
@@ -12,7 +12,7 @@ export class EventController {
         @Inject('EventService')
         private readonly eventService: EventServiceInterface,
         @Inject(EVENTBUS_LOGGER)
-        private readonly logger: winston.Logger,
+        private readonly logger: Logger,
     ) {}
 
 

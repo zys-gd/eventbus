@@ -3,7 +3,7 @@ import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EVENTBUS_LOGGER, SubscriberEntity } from '../../common';
 import { SubscribeServiceInterface } from '../services';
-import winston from 'winston';
+import { Logger } from 'winston';
 
 @Controller('subscription')
 export class SubscribeController {
@@ -12,7 +12,7 @@ export class SubscribeController {
         @Inject('SubscribeService')
         private readonly subscribeService: SubscribeServiceInterface,
         @Inject(EVENTBUS_LOGGER)
-        private readonly logger: winston.Logger,
+        private readonly logger: Logger,
     ) {
     }
 

@@ -1,5 +1,5 @@
 import { HttpService, Inject, Injectable } from '@nestjs/common';
-import winston from 'winston';
+import { Logger } from 'winston';
 import { EventNotificationServiceInterface } from './event-notification.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -24,7 +24,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         private readonly eventLogEntityRepository: Repository<EventLogEntity>,
         private readonly httpService: HttpService,
         @Inject(EVENTBUS_LOGGER)
-        private readonly logger: winston.Logger,
+        private readonly logger: Logger,
         @Inject(NOTIFICATION_SERVICE)
         private readonly client: ClientProxy,
     ) {
