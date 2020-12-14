@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import * as winston from 'winston';
-import { format } from 'winston';
+import { Logger, createLogger, transports as LoggerTransports, format as LoggerFormat } from 'winston';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { EventEntity, EventLogEntity, EventTypeEntity, SubscriberEntity, SubscriptionEntity, } from './entities';
@@ -8,15 +7,15 @@ import { EVENTBUS_LOGGER } from './eventbus-constants';
 
 const eventbusLogger = {
     provide: EVENTBUS_LOGGER,
-    useFactory: (): winston.Logger => {
-        return winston.createLogger({
+    useFactory: (): Logger => {
+        return createLogger({
             level: 'silly',
-            format: format.combine(
-                format.splat(),
-                format.simple()
+            format: LoggerFormat.combine(
+                LoggerFormat.splat(),
+                LoggerFormat.simple()
             ),
             transports: [
-                new winston.transports.Console(),
+                new LoggerTransports.Console(),
             ]
         });
     },
