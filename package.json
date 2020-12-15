@@ -83,7 +83,7 @@
         "transform": {
             "^.+\\.(t|j)s$": "ts-jest"
         },
-        "coverageDirectory": "./coverage",
+        "coverageDirectory": "<rootDir>/coverage",
         "testEnvironment": "node",
         "roots": [
             "<rootDir>/src/"

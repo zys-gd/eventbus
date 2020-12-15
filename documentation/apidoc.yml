@@ -1,7 +1,20 @@
 openapi: 3.0.0
 info:
     title: Toplyvo gateway
-    description: Eventbus for subscribing on events between microservices
+    description: |
+        Eventbus for subscribing on events between microservices
+
+        Each request must be signed by hash. There are two types of hash creating:
+
+        1. If request has a body, bcrypt concatenation's result of body and secret
+
+            bcrypt.hashSync('{"eventType":"test_type","data":{"123":"test data string"}}' + 'secret', 10);
+
+        2. If request hasn't body, bcrypt concatenation's result of apiKey and secret
+
+            bcrypt.hashSync('apiKey123' + 'secret321', 10);
+
+        You should get hash (e.g `$2a$10$F5/5yJUExWBSgDA6zKNdIOthL2yAEpHiMatocu2kolzUEiUG.shBu`) and pass it to requirement header `hash`
     version: '1.0'
     contact: {}
 tags: []
@@ -108,7 +121,7 @@ paths:
                             $ref: '#/components/schemas/Subscribe'
             responses:
                 '201':
-                    description: Event was posted.
+                    description: Subscribed.
                 '409':
                     description: Subscription already exist.
     /api/subscription/{eventType}:
