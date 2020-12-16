@@ -2,7 +2,7 @@ import { EventNotificationService } from '../services';
 import { EventEntity, EventLogEntity, SubscriberEntity, SubscriptionEntity } from '../../common';
 import { Repository } from 'typeorm';
 import { HttpService } from '@nestjs/common';
-import { createLogger } from 'winston';
+import { createLogger, transports } from 'winston';
 import { ClientProxy } from '@nestjs/microservices';
 import { createStubInstance } from 'sinon';
 import { Observable } from 'rxjs';
@@ -22,7 +22,12 @@ describe('Consumer Controller', () => {
         subscriptionRepository = createStubInstance(Repository);
         eventLogRepository = createStubInstance(Repository);
         httpServiceMock = createStubInstance(HttpService);
-        loggerMock = createLogger();
+        loggerMock = createLogger({
+            level: 'error',
+            transports: [
+                new transports.Console(),
+            ]
+        });
         clientProxyMock = createStubInstance(ClientProxy);
 
         eventNotificationService = new EventNotificationService(
@@ -64,9 +69,6 @@ describe('Consumer Controller', () => {
             }]);
 
             eventLogRepository.findOneOrFail.resolves(eventLogEntity);
-
-            // loggerMock.debug.returns([]);
-            jest.spyOn(loggerMock, 'debug').mockReturnThis();
 
             const observableMock = createStubInstance<Observable<AxiosResponse<any>>>(Observable);
 
@@ -128,8 +130,6 @@ describe('Consumer Controller', () => {
             subscriptionRepository.findOneOrFail.resolves(subscriptionEntity);
 
             eventLogRepository.findOneOrFail.resolves(eventLogEntity);
-
-            jest.spyOn(loggerMock, 'debug').mockReturnThis();
 
             const observableMock = createStubInstance<Observable<AxiosResponse<any>>>(Observable);
 

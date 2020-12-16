@@ -1,26 +1,24 @@
 import { ConsumerController } from './consumer.controller';
 import { EventNotificationServiceInterface } from '../services/event-notification.service.interface';
-import { createLogger } from 'winston';
+import { createLogger, transports } from 'winston';
 import { EventNotificationService } from '../services';
 import { createStubInstance } from 'sinon';
 import { EventEntity, SubscriberEntity } from '../../common';
 import { RmqContext } from '@nestjs/microservices';
 import { NotificationDto } from '../dto/notification.dto';
 
-class ChannelWrapper {
-    public ack() {
-        return;
-    };
-}
-
 describe('Consumer Controller', () => {
     let consumerController: ConsumerController;
     let eventNotificationServiceMock: EventNotificationServiceInterface;
     let loggerMock: any;
 
-
     beforeEach(async () => {
-        loggerMock = createLogger({ level: 'error' });
+        loggerMock = createLogger({
+            level: 'error',
+            transports: [
+                new transports.Console(),
+            ]
+        });
         eventNotificationServiceMock = createStubInstance(EventNotificationService);
         consumerController = new ConsumerController(eventNotificationServiceMock, loggerMock);
     });
@@ -38,11 +36,9 @@ describe('Consumer Controller', () => {
             };
 
             const rmqContext: any = createStubInstance<RmqContext>(RmqContext);
-            const channelWrapper: any = createStubInstance<ChannelWrapper>(ChannelWrapper);
 
             rmqContext.getMessage.returns({});
-            rmqContext.getChannelRef.returns(channelWrapper);
-            jest.spyOn(loggerMock, 'debug').mockReturnThis();
+            rmqContext.getChannelRef.returns({ ack: () => undefined });
 
             await consumerController.processingEventAction(event, rmqContext);
         });
@@ -69,11 +65,9 @@ describe('Consumer Controller', () => {
             };
 
             const rmqContext: any = createStubInstance<RmqContext>(RmqContext);
-            const channelWrapper: any = createStubInstance<ChannelWrapper>(ChannelWrapper);
 
             rmqContext.getMessage.returns({});
-            rmqContext.getChannelRef.returns(channelWrapper);
-            jest.spyOn(loggerMock, 'debug').mockReturnThis();
+            rmqContext.getChannelRef.returns({ ack: () => undefined });
 
             await consumerController.notifyAction(notificationDto, rmqContext);
         });
