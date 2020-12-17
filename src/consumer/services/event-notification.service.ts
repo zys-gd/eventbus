@@ -71,7 +71,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
      * @param tries
      * @private
      */
-    private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<EventLogEntity | void> {
+    private async notifySubscriber(event: EventEntity, subscription: SubscriptionEntity, tries = 0): Promise<EventLogEntity> {
         this.logger.debug('Starting EventNotificationService::notifySubscriber');
         this.logger.debug('EventEntity: %s', JSON.stringify(event));
         this.logger.debug('SubscriptionEntity: %s', JSON.stringify(subscription));
@@ -84,13 +84,13 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                     { subscriber: subscription.subscriber, event },
                 ]
             });
+            eventLog.tries = tries;
         } catch (e) {
             eventLog = new EventLogEntity();
             eventLog.subscriber = subscription.subscriber;
             eventLog.event = event;
+            eventLog.tries = 1;
         }
-
-        eventLog.tries = tries;
 
         const notificationDto: NotificationDto = new NotificationDto(event, tries + 1, subscription.subscriber);
 
@@ -104,24 +104,18 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                 eventLog.deliveryDatetime = new Date();
 
                 this.logger.debug('EventNotificationService::notifySubscriber: Success sending request to subscriber.');
-
-                return this.eventLogEntityRepository.save(eventLog);
+                return this.eventLogEntityRepository.save(eventLog);;
             }
-
             this.logger.debug('EventNotificationService::notifySubscriber: Wrong HTTP code while sending request to subscriber.');
-
-            return this.pushNotification2Queue(notificationDto);
         } catch (e) {
-            await this.eventLogEntityRepository.save(eventLog);
-
             this.logger.debug(
                 'EventNotificationService::notifySubscriber: Error while sending request to subscriber. HTTP code: "%s", HTTP status: "%s"',
                 e.response ? e.response.status : undefined,
                 e.response ? e.response.statusText : undefined,
             );
-
-            return this.pushNotification2Queue(notificationDto);
         }
+        await this.pushNotification2Queue(notificationDto);
+        return this.eventLogEntityRepository.save(eventLog);
     }
 
     /**

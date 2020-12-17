@@ -25,13 +25,18 @@ describe('AuthService', () => {
                 '{"eventType":"test_type","data":{"123":"test data string"}}',
                 '$2a$10$ujWu9IincNRJN1PqrgJ4UOnwVe1owYQy0hjvvmU2scE0fzYoUJKxq'
             )).resolves.toStrictEqual(subscriber);
+        });
+    });
+
+    describe('validateHash', () => {
+        it('negative test', () => {
 
             subscriberRepositoryMock.findOneOrFail.resolves();
             expect(authService.validateHash(
                 '123',
                 '{"eventType":"test_type","data":{"123":"test data string"}}',
                 '$2a$10$ujWu9IincNRJN1PqrgJ4UOnwVe1owYQy0hjvvmU2scE0fzYoUJKxq'
-            )).rejects.toThrow();
+            )).resolves.toBeUndefined();
         });
     });
 
@@ -44,12 +49,16 @@ describe('AuthService', () => {
                 '123',
                 '$2a$10$5URrVTMzyxU.KgXREgcypOHUVmXiZoibhjSFgkRsg9GBd5/U0NmZq'
             )).resolves.toStrictEqual(subscriber);
+        });
+    });
 
+    describe('validateApiKey', () => {
+        it('negative test', () => {
             subscriberRepositoryMock.findOneOrFail.resolves();
             expect(authService.validateApiKey(
                 '123',
                 '$2a$10$5URrVTMzyxU.KgXREgcypOHUVmXiZoibhjSFgkRsg9GBd5/U0NmZq'
-            )).rejects.toThrow();
+            )).resolves.toBeUndefined();
         });
     });
 

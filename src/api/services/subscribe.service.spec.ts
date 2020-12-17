@@ -35,8 +35,20 @@ describe('SubscribeService', () => {
             subscriptionEntityRepositoryMock.save.resolves(subscription);
 
             expect(subscribeService.subscribe(subscribeDto, subscriber)).resolves.toStrictEqual(subscription);
+        });
+    });
 
+    describe('subscribe', () => {
+        it('negative test', () => {
+            const subscription: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
+            const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
+            const eventType: SubscriberEntity = fixtures.getTestEventTypeEntity();
+            const subscribeDto = dto.getTestSubscribeDto();
+
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
             subscriptionEntityRepositoryMock.count.resolves(1);
+            subscriptionEntityRepositoryMock.save.resolves(subscription);
+
             expect(subscribeService.subscribe(subscribeDto, subscriber)).rejects.toThrow();
         });
     });
@@ -49,7 +61,15 @@ describe('SubscribeService', () => {
             eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
             subscriptionEntityRepositoryMock.delete.resolves({ affected: 1 });
             expect(subscribeService.unsubscribe(eventType.name || '', subscriber)).resolves.toStrictEqual(undefined);
+        });
+    });
 
+    describe('unsubscribe', () => {
+        it('negative test',  () => {
+            const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
+            const eventType: EventTypeEntity = fixtures.getTestEventTypeEntity();
+
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
             subscriptionEntityRepositoryMock.delete.resolves({ affected: 0 });
             expect(subscribeService.unsubscribe(eventType.name || '', subscriber)).rejects.toThrow();
         });
