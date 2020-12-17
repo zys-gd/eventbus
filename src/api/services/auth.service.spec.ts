@@ -1,6 +1,6 @@
 import { createStubInstance } from 'sinon';
 import { Repository } from 'typeorm';
-import { TestDto, TestFixtures } from '../../common/test-helpers';
+import { TestFixtures } from '../../common/test-helpers';
 import { SubscriberEntity } from '../../common';
 import { AuthService } from './auth.service';
 
@@ -8,11 +8,9 @@ describe('AuthService', () => {
     let authService: AuthService;
     let subscriberRepositoryMock: any;
     let fixtures: TestFixtures;
-    let dto: TestDto;
 
     beforeEach(async () => {
         fixtures = new TestFixtures();
-        dto = new TestDto(fixtures);
         subscriberRepositoryMock = createStubInstance(Repository);
         authService = new AuthService(subscriberRepositoryMock);
     });
