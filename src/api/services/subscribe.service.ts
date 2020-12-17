@@ -24,20 +24,17 @@ export class SubscribeService implements SubscribeServiceInterface {
             ]
         });
 
-        try {
-            const existingSubscription: number = await this.subscriptionEntityRepository.count({
-                where: [
-                    {
-                        eventType: eventType,
-                        subscriber: subscriber,
-                    },
-                ]
-            });
+        const existingSubscription: number = await this.subscriptionEntityRepository.count({
+            where: [
+                {
+                    eventType: eventType,
+                    subscriber: subscriber,
+                },
+            ]
+        });
 
-            if (existingSubscription != 0) {
-                throw new Error('Subscription already exists');
-            }
-        } catch (e) {
+        if (existingSubscription != 0) {
+            throw new Error('Subscription already exists');
         }
 
         const subscription: SubscriptionEntity = new SubscriptionEntity();
@@ -45,9 +42,8 @@ export class SubscribeService implements SubscribeServiceInterface {
         subscription.notificationUrl = subscribeDto.notificationUrl;
         subscription.eventType = eventType;
         subscription.subscriber = subscriber;
-        await this.subscriptionEntityRepository.save(subscription);
 
-        return subscription;
+        return this.subscriptionEntityRepository.save(subscription);
     }
 
     public async unsubscribe(eventType: string, subscriber: SubscriberEntity): Promise<void> {

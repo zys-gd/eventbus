@@ -3,14 +3,17 @@ import { EventNotificationServiceInterface } from '../services/event-notificatio
 import { createLogger, transports } from 'winston';
 import { EventNotificationService } from '../services';
 import { createStubInstance } from 'sinon';
-import { EventEntity, SubscriberEntity } from '../../common';
+import { EventEntity } from '../../common';
 import { RmqContext } from '@nestjs/microservices';
 import { NotificationDto } from '../dto/notification.dto';
+import { TestDto, TestFixtures } from '../../common/test-helpers';
 
 describe('Consumer Controller', () => {
     let consumerController: ConsumerController;
     let eventNotificationServiceMock: EventNotificationServiceInterface;
     let loggerMock: any;
+    let fixtures: TestFixtures;
+    let dto: TestDto;
 
     beforeEach(async () => {
         loggerMock = createLogger({
@@ -19,57 +22,43 @@ describe('Consumer Controller', () => {
                 new transports.Console(),
             ]
         });
+        fixtures = new TestFixtures();
+        dto = new TestDto(fixtures);
         eventNotificationServiceMock = createStubInstance(EventNotificationService);
         consumerController = new ConsumerController(eventNotificationServiceMock, loggerMock);
     });
 
     describe('processingEventAction', () => {
-        it('positive test', async () => {
-            const event: EventEntity = {
-                id: 1,
-                data: '{"eventType":"test_type","data":{"123":"test data string"}}',
-                createdDatetime: new Date(),
-                eventType: {
-                    uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335b',
-                    name: 'test'
-                },
-            };
+        it('positive test', () => {
+            const event: EventEntity = fixtures.getTestEventEntity();
 
             const rmqContext: any = createStubInstance<RmqContext>(RmqContext);
 
             rmqContext.getMessage.returns({});
             rmqContext.getChannelRef.returns({ ack: () => undefined });
 
-            await consumerController.processingEventAction(event, rmqContext);
+            consumerController.processingEventAction(event, rmqContext);
+            expect(consumerController.processingEventAction({}, rmqContext)).resolves.toThrow();
         });
     });
 
     describe('notifyAction', () => {
-        it('positive test', async () => {
-            const event: EventEntity = {
-                id: 1,
-                data: '{"eventType":"test_type","data":{"123":"test data string"}}',
-                createdDatetime: new Date(),
-                eventType: {
-                    uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335b',
-                    name: 'test'
-                },
-            };
-            const subscriber: SubscriberEntity = {
-                uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335a',
-            };
-            const notificationDto: NotificationDto = {
-                event,
-                subscriber,
-                tries: 0,
-            };
+        it('positive test', () => {
+            const notificationDto: NotificationDto = dto.getTestNotificationDto();
 
             const rmqContext: any = createStubInstance<RmqContext>(RmqContext);
 
             rmqContext.getMessage.returns({});
             rmqContext.getChannelRef.returns({ ack: () => undefined });
 
-            await consumerController.notifyAction(notificationDto, rmqContext);
+            consumerController.notifyAction(notificationDto, rmqContext);
+
+            const brokenNotificationDto: NotificationDto = {
+                event: {},
+                subscriber: {},
+                tries: 11,
+            };
+            expect(consumerController.notifyAction(brokenNotificationDto, rmqContext)).resolves.toThrow();
         });
     });
 

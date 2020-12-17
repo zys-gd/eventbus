@@ -116,8 +116,8 @@ export class EventNotificationService implements EventNotificationServiceInterfa
 
             this.logger.debug(
                 'EventNotificationService::notifySubscriber: Error while sending request to subscriber. HTTP code: "%s", HTTP status: "%s"',
-                e.response.status,
-                e.response.statusText
+                e.response ? e.response.status : undefined,
+                e.response ? e.response.statusText : undefined,
             );
 
             return this.pushNotification2Queue(notificationDto);

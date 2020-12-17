@@ -1,18 +1,43 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { EventService } from './event.service';
+import { createStubInstance } from 'sinon';
+import { Repository } from 'typeorm';
+import { ClientProxy } from '@nestjs/microservices';
+import { TestDto, TestFixtures } from '../../common/test-helpers';
+import { EventDto } from '../dto';
 
-xdescribe('EventService', () => {
-  let service: EventService;
+describe('EventService', () => {
+    let eventService: EventService;
+    let clientProxyMock: any;
+    let eventEntityRepositoryMock: any;
+    let eventTypeEntityRepositoryMock: any;
+    let fixtures: TestFixtures;
+    let dto: TestDto;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [EventService],
-    }).compile();
+    beforeEach(async () => {
+        eventEntityRepositoryMock = createStubInstance(Repository);
+        eventTypeEntityRepositoryMock = createStubInstance(Repository);
+        clientProxyMock = createStubInstance(ClientProxy);
+        fixtures = new TestFixtures();
+        dto = new TestDto(fixtures);
 
-    service = module.get<EventService>(EventService);
-  });
+        eventService = new EventService(
+            eventEntityRepositoryMock,
+            eventTypeEntityRepositoryMock,
+            clientProxyMock
+        );
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    describe('initEvent', () => {
+        it('positive test', () => {
+            const eventDto: EventDto = dto.getTestEventDto();
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(fixtures.getTestEventTypeEntity());
+            eventEntityRepositoryMock.save.resolves(fixtures.getTestEventEntity());
+
+            eventService.initEvent(eventDto);
+        });
+    });
+
+    it('should be defined', () => {
+        expect(eventService).toBeDefined();
+    });
 });

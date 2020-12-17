@@ -20,7 +20,7 @@ export class AuthService implements AuthServiceInterface {
             return undefined;
         }
 
-        if (await compare(JSON.stringify(event) + subscriber.apiSecret, requestHash)) {
+        if (await compare(event + subscriber.apiSecret, requestHash)) {
             return subscriber;
         }
     }
@@ -38,9 +38,9 @@ export class AuthService implements AuthServiceInterface {
     }
 
     private async getSubscriberByApiKey(apiKey: string): Promise<SubscriberEntity | undefined> {
-        return await this.subscriberRepository.findOneOrFail({
+        return this.subscriberRepository.findOneOrFail({
             where: [
-                { apiKey },
+                { apiKey, active: true },
             ]
         });
     }

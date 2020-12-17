@@ -1,5 +1,5 @@
 import { EventNotificationService } from '../services';
-import { EventEntity, EventLogEntity, SubscriberEntity, SubscriptionEntity } from '../../common';
+import { EventEntity, EventLogEntity, SubscriptionEntity } from '../../common';
 import { Repository } from 'typeorm';
 import { HttpService } from '@nestjs/common';
 import { createLogger, transports } from 'winston';
@@ -8,6 +8,7 @@ import { createStubInstance } from 'sinon';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { NotificationDto } from '../dto/notification.dto';
+import { TestDto, TestFixtures } from '../../common/test-helpers';
 
 
 describe('Consumer Controller', () => {
@@ -17,6 +18,8 @@ describe('Consumer Controller', () => {
     let httpServiceMock: any;
     let loggerMock: any;
     let clientProxyMock: any;
+    let fixtures: TestFixtures;
+    let dto: TestDto;
 
     beforeEach(async () => {
         subscriptionRepository = createStubInstance(Repository);
@@ -29,6 +32,8 @@ describe('Consumer Controller', () => {
             ]
         });
         clientProxyMock = createStubInstance(ClientProxy);
+        fixtures = new TestFixtures();
+        dto = new TestDto(fixtures);
 
         eventNotificationService = new EventNotificationService(
             subscriptionRepository,
@@ -40,33 +45,14 @@ describe('Consumer Controller', () => {
     });
 
     describe('processEvent', () => {
-        it('positive test', async () => {
+        it('positive test', () => {
 
-            const eventEntity: EventEntity = {
-                id: 1,
-                data: '{"eventType":"test_type","data":{"123":"test data string"}}',
-                createdDatetime: new Date(),
-                eventType: {
-                    uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335b',
-                    name: 'test'
-                },
-            };
-            const subscriber: SubscriberEntity = {
-                uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335a',
-            };
+            const eventEntity: EventEntity = fixtures.getTestEventEntity();
 
-            const eventLogEntity: EventLogEntity = {
-                tries: 0,
-                id: 1,
-                deliveryDatetime: new Date(),
-                event: eventEntity,
-                subscriber
-            };
+            const eventLogEntity: EventLogEntity = fixtures.getTestEventLogEntity();
+            const subscriptionEntity: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
 
-            subscriptionRepository.find.resolves([{
-                notificationUrl: 'localhost',
-                subscriber
-            }]);
+            subscriptionRepository.find.resolves([subscriptionEntity]);
 
             eventLogRepository.findOneOrFail.resolves(eventLogEntity);
 
@@ -78,55 +64,20 @@ describe('Consumer Controller', () => {
 
             eventLogRepository.save.resolves(eventLogEntity);
 
-            expect(await eventNotificationService.processEvent(eventEntity)).toStrictEqual([eventLogEntity]);
+            expect(eventNotificationService.processEvent(eventEntity)).resolves.toStrictEqual([eventLogEntity]);
         });
     });
 
     describe('processNotification', () => {
-        it('positive test', async () => {
+        it('positive test', () => {
 
-            const event: EventEntity = {
-                id: 1,
-                data: '{"eventType":"test_type","data":{"123":"test data string"}}',
-                createdDatetime: new Date(),
-                eventType: {
-                    uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335b',
-                    name: 'test'
-                },
-            };
-            const subscriber: SubscriberEntity = {
-                uuid: '4f175014-0fc9-4f1e-8d54-5a212e32335a',
-            };
+            const eventLogEntity: EventLogEntity = fixtures.getTestEventEntity();
 
-            const eventLogEntity: EventLogEntity = {
-                tries: 0,
-                id: 1,
-                deliveryDatetime: new Date(),
-                event,
-                subscriber
-            };
+            const subscriptionEntity: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
 
-            const subscriptionEntity: SubscriptionEntity = {
-                uuid: '5f175014-0fc9-4f1e-8d54-5a212e32335a',
-                notificationUrl: '1',
-                createdDatetime: new Date(),
-                eventType: {
-                    uuid: '6f175014-0fc9-4f1e-8d54-5a212e32335a',
-                    name: 'test',
-                },
-                subscriber,
-            };
+            const notificationDto: NotificationDto = dto.getTestNotificationDto();
 
-            const notificationDto: NotificationDto = {
-                event,
-                subscriber,
-                tries: 0,
-            };
-
-            subscriptionRepository.find.resolves([{
-                notificationUrl: 'localhost',
-                subscriber
-            }]);
+            subscriptionRepository.find.resolves([subscriptionEntity]);
             subscriptionRepository.findOneOrFail.resolves(subscriptionEntity);
 
             eventLogRepository.findOneOrFail.resolves(eventLogEntity);
@@ -139,7 +90,7 @@ describe('Consumer Controller', () => {
 
             eventLogRepository.save.resolves(eventLogEntity);
 
-            expect(await eventNotificationService.processNotification(notificationDto)).toStrictEqual(eventLogEntity);
+            expect(eventNotificationService.processNotification(notificationDto)).resolves.toStrictEqual(eventLogEntity);
         });
     });
 
