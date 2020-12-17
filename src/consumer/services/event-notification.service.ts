@@ -104,7 +104,7 @@ export class EventNotificationService implements EventNotificationServiceInterfa
                 eventLog.deliveryDatetime = new Date();
 
                 this.logger.debug('EventNotificationService::notifySubscriber: Success sending request to subscriber.');
-                return this.eventLogEntityRepository.save(eventLog);;
+                return this.eventLogEntityRepository.save(eventLog);
             }
             this.logger.debug('EventNotificationService::notifySubscriber: Wrong HTTP code while sending request to subscriber.');
         } catch (e) {
