@@ -41,17 +41,6 @@ describe('Consumer Controller', () => {
         });
     });
 
-    xdescribe('processingEventAction', () => {
-        it('negative test', () => {
-            const rmqContext: any = createStubInstance<RmqContext>(RmqContext);
-
-            rmqContext.getMessage.returns({});
-            rmqContext.getChannelRef.returns({ ack: () => undefined });
-
-            expect(consumerController.processingEventAction({}, rmqContext)).resolves.toThrow();
-        });
-    });
-
     describe('notifyAction', () => {
         it('positive test', () => {
             const notificationDto: NotificationDto = dto.getTestNotificationDto();
@@ -62,22 +51,6 @@ describe('Consumer Controller', () => {
             rmqContext.getChannelRef.returns({ ack: () => undefined });
 
             consumerController.notifyAction(notificationDto, rmqContext);
-        });
-    });
-
-    xdescribe('notifyAction', () => {
-        it('negative test', () => {
-            const rmqContext: any = createStubInstance<RmqContext>(RmqContext);
-
-            rmqContext.getMessage.returns({});
-            rmqContext.getChannelRef.returns({ ack: () => undefined });
-
-            const brokenNotificationDto: NotificationDto = {
-                event: {},
-                subscriber: {},
-                tries: 11,
-            };
-            expect(consumerController.notifyAction(brokenNotificationDto, rmqContext)).resolves.toThrow();
         });
     });
 });
