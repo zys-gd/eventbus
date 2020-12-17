@@ -80,8 +80,4 @@ describe('Consumer Controller', () => {
             expect(consumerController.notifyAction(brokenNotificationDto, rmqContext)).resolves.toThrow();
         });
     });
-
-    xit('should be defined', () => {
-        expect(consumerController).toBeDefined();
-    });
 });

@@ -74,8 +74,4 @@ describe('SubscribeService', () => {
             expect(subscribeService.unsubscribe(eventType.name || '', subscriber)).rejects.toThrow();
         });
     });
-
-    it('should be defined', () => {
-        expect(subscribeService).toBeDefined();
-    });
 });

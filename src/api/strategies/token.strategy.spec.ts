@@ -35,8 +35,4 @@ describe('TokenStrategy', () => {
             expect(tokenStrategy.authenticate({})).rejects.toThrow();
         });
     });
-
-    it('should be defined', () => {
-        expect(tokenStrategy).toBeDefined();
-    });
 });

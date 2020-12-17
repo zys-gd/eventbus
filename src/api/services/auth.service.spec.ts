@@ -61,8 +61,4 @@ describe('AuthService', () => {
             )).resolves.toBeUndefined();
         });
     });
-
-    it('should be defined', () => {
-        expect(authService).toBeDefined();
-    });
 });

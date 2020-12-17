@@ -93,8 +93,4 @@ describe('Consumer Controller', () => {
             expect(eventNotificationService.processNotification(notificationDto)).resolves.toStrictEqual(eventLogEntity);
         });
     });
-
-    xit('should be defined', () => {
-        expect(eventNotificationService).toBeDefined();
-    });
 });

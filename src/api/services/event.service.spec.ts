@@ -36,8 +36,4 @@ describe('EventService', () => {
             eventService.initEvent(eventDto);
         });
     });
-
-    it('should be defined', () => {
-        expect(eventService).toBeDefined();
-    });
 });

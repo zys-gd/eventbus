@@ -36,8 +36,4 @@ describe('HashStrategy', () => {
             expect(hashStrategy.authenticate({})).rejects.toThrow();
         });
     });
-
-    it('should be defined', () => {
-        expect(hashStrategy).toBeDefined();
-    });
 });
