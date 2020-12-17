@@ -1,18 +1,77 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { SubscribeService } from './subscribe.service';
+import { TestDto, TestFixtures } from '../../common/test-helpers';
+import { createStubInstance } from 'sinon';
+import { Repository } from 'typeorm';
+import { EventTypeEntity, SubscriberEntity, SubscriptionEntity } from '../../common';
 
-xdescribe('SubscribeService', () => {
-  let service: SubscribeService;
+describe('SubscribeService', () => {
+    let subscribeService: SubscribeService;
+    let fixtures: TestFixtures;
+    let dto: TestDto;
+    let eventTypeEntityRepositoryMock: any;
+    let subscriptionEntityRepositoryMock: any;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [SubscribeService],
-    }).compile();
+    beforeEach(async () => {
+        fixtures = new TestFixtures();
+        dto = new TestDto(fixtures);
+        eventTypeEntityRepositoryMock = createStubInstance(Repository);
+        subscriptionEntityRepositoryMock = createStubInstance(Repository);
 
-    service = module.get<SubscribeService>(SubscribeService);
-  });
+        subscribeService = new SubscribeService(
+            subscriptionEntityRepositoryMock,
+            eventTypeEntityRepositoryMock
+        );
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    describe('subscribe', () => {
+        it('positive test', () => {
+            const subscription: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
+            const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
+            const eventType: SubscriberEntity = fixtures.getTestEventTypeEntity();
+            const subscribeDto = dto.getTestSubscribeDto();
+
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
+            subscriptionEntityRepositoryMock.count.resolves(0);
+            subscriptionEntityRepositoryMock.save.resolves(subscription);
+
+            expect(subscribeService.subscribe(subscribeDto, subscriber)).resolves.toStrictEqual(subscription);
+        });
+    });
+
+    describe('subscribe', () => {
+        it('negative test', () => {
+            const subscription: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
+            const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
+            const eventType: SubscriberEntity = fixtures.getTestEventTypeEntity();
+            const subscribeDto = dto.getTestSubscribeDto();
+
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
+            subscriptionEntityRepositoryMock.count.resolves(1);
+            subscriptionEntityRepositoryMock.save.resolves(subscription);
+
+            expect(subscribeService.subscribe(subscribeDto, subscriber)).rejects.toThrow();
+        });
+    });
+
+    describe('unsubscribe', () => {
+        it('positive test',  () => {
+            const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
+            const eventType: EventTypeEntity = fixtures.getTestEventTypeEntity();
+
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
+            subscriptionEntityRepositoryMock.delete.resolves({ affected: 1 });
+            expect(subscribeService.unsubscribe(eventType.name || '', subscriber)).resolves.toStrictEqual(undefined);
+        });
+    });
+
+    describe('unsubscribe', () => {
+        it('negative test',  () => {
+            const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
+            const eventType: EventTypeEntity = fixtures.getTestEventTypeEntity();
+
+            eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
+            subscriptionEntityRepositoryMock.delete.resolves({ affected: 0 });
+            expect(subscribeService.unsubscribe(eventType.name || '', subscriber)).rejects.toThrow();
+        });
+    });
 });

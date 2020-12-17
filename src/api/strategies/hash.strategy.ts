@@ -18,7 +18,7 @@ export class HashStrategy extends PassportStrategy(Strategy, 'hash') {
         }
         const subscriber = await this.authService.validateHash(
             req.headers['apikey'] || '',
-            req.body,
+            JSON.stringify(req.body),
             req.headers['hash'] || ''
         );
         if (!subscriber) {
