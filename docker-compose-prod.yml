@@ -1,52 +1,40 @@
 version: '3.8'
 services:
     node-api:
+        image: ${DOCKER_REGISTRY}/eventbus-app-prod:${IMAGE_TAG}
         container_name: eventbus_node_api
         restart: always
-        image: library/node:14
         env_file:
             - .env
-        volumes:
-            - ./:/app
-        working_dir: /app
-        user: node
         ports:
             - "3000:3000"
-        command: ${ENTRYPOINT_API}
+        command: npm run start:api:prod
         depends_on:
             - mysql
         networks:
             - eventbus
 
     event-consumer:
+        image: ${DOCKER_REGISTRY}/eventbus-app-prod:${IMAGE_TAG}
         container_name: eventbus_node_consumer
         restart: always
-        image: library/node:14
         env_file:
             - .env
-        volumes:
-            - ./:/app
-        working_dir: /app
-        user: node
-        command: ${ENTRYPOINT_CONSUMER}
+        command: npm run start:api:prod
         environment:
-            - QUEUE_NAME=${EVENT_QUEUE_NAME}
+            - start:consumer:prod
         depends_on:
             - rabbitmq
         networks:
             - eventbus
 
     notification-consumer:
+        image: ${DOCKER_REGISTRY}/eventbus-app-prod:${IMAGE_TAG}
         container_name: eventbus_notification_consumer
         restart: always
-        image: library/node:14
         env_file:
             - .env
-        volumes:
-            - ./:/app
-        working_dir: /app
-        user: node
-        command: ${ENTRYPOINT_CONSUMER}
+        command: start:consumer:prod
         environment:
             - QUEUE_NAME=${NOTIFICATION_QUEUE_NAME}
         depends_on:
@@ -86,18 +74,6 @@ services:
             interval: 10s
             timeout: 10s
             retries: 5
-        networks:
-            - eventbus
-
-    apidoc:
-        image: swaggerapi/swagger-ui
-        restart: on-failure
-        ports:
-            - "3001:8080"
-        volumes:
-            - ./documentation/:/usr/share/nginx/html/documentation/
-        environment:
-            URLS: "[ { url: './documentation/apidoc.yml', name: 'EventBus Service' } ]"
         networks:
             - eventbus
 
