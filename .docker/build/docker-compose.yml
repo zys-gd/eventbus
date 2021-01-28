@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  node-app-image:
+    build:
+      context: ""
+      dockerfile: ".docker/build/node-app/Dockerfile"
+    image: ${DOCKER_REGISTRY}/eventbus-app-${DOCKER_IMAGE_SUFFIX}
+    container_name: toplyvo_eventbus_app
+    volumes:
+      - .:/usr/src/app
