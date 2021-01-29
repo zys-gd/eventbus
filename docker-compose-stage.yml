@@ -4,13 +4,16 @@ services:
         image: ${DOCKER_REGISTRY}/eventbus-app-stage
         container_name: eventbus_node_api
         restart: always
-        env_file:
-            - .env
         ports:
             - "3000:3000"
         command: npm run start:api:prod
+        env_file:
+            - .env
+        environment:
+            - TZ: Europe/Kiev
         depends_on:
             - mysql
+            - rabbitmq
         networks:
             - eventbus
 
@@ -18,12 +21,14 @@ services:
         image: ${DOCKER_REGISTRY}/eventbus-app-stage
         container_name: eventbus_node_consumer
         restart: always
+        command: npm run start:api:prod
         env_file:
             - .env
-        command: npm run start:api:prod
         environment:
-            - start:consumer:prod
+            - QUEUE_NAME=${EVENT_QUEUE_NAME}
+            - TZ: Europe/Kiev
         depends_on:
+            - mysql
             - rabbitmq
         networks:
             - eventbus
@@ -32,12 +37,14 @@ services:
         image: ${DOCKER_REGISTRY}/eventbus-app-stage
         container_name: eventbus_notification_consumer
         restart: always
+        command: start:consumer:prod
         env_file:
             - .env
-        command: start:consumer:prod
         environment:
             - QUEUE_NAME=${NOTIFICATION_QUEUE_NAME}
+            - TZ: Europe/Kiev
         depends_on:
+            - mysql
             - rabbitmq
         networks:
             - eventbus
@@ -59,6 +66,8 @@ services:
             - MYSQL_DATABASE
             - MYSQL_USER
             - MYSQL_PASSWORD
+            - MYSQL_ROOT_PASSWORD
+            - TZ: Europe/Kiev
         networks:
             - eventbus
 
@@ -67,6 +76,8 @@ services:
         image: library/rabbitmq:3.8-management
         restart: always
         hostname: eventbus-rmq
+        environment:
+            - TZ: Europe/Kiev
         ports:
             - "15672:15672"
         volumes:
