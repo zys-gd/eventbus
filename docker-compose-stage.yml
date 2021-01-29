@@ -10,7 +10,7 @@ services:
         env_file:
             - .env
         environment:
-            - TZ: Europe/Kiev
+            - TZ=Europe/Kiev
         depends_on:
             - mysql
             - rabbitmq
@@ -26,7 +26,7 @@ services:
             - .env
         environment:
             - QUEUE_NAME=${EVENT_QUEUE_NAME}
-            - TZ: Europe/Kiev
+            - TZ=Europe/Kiev
         depends_on:
             - mysql
             - rabbitmq
@@ -42,7 +42,7 @@ services:
             - .env
         environment:
             - QUEUE_NAME=${NOTIFICATION_QUEUE_NAME}
-            - TZ: Europe/Kiev
+            - TZ=Europe/Kiev
         depends_on:
             - mysql
             - rabbitmq
@@ -67,7 +67,7 @@ services:
             - MYSQL_USER
             - MYSQL_PASSWORD
             - MYSQL_ROOT_PASSWORD
-            - TZ: Europe/Kiev
+            - TZ=Europe/Kiev
         networks:
             - eventbus
 
@@ -77,7 +77,7 @@ services:
         restart: always
         hostname: eventbus-rmq
         environment:
-            - TZ: Europe/Kiev
+            - TZ=Europe/Kiev
         ports:
             - "15672:15672"
         volumes:
