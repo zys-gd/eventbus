@@ -1,8 +1,8 @@
 version: '3.8'
 services:
-    node-api:
+    api:
         image: ${DOCKER_REGISTRY}/eventbus-app-prod:${IMAGE_TAG}
-        container_name: eventbus_node_api
+        container_name: eventbus_prod_api
         restart: always
         env_file:
             - .env
@@ -12,11 +12,11 @@ services:
         depends_on:
             - mysql
         networks:
-            - eventbus
+            - eventbus_prod
 
     event-consumer:
         image: ${DOCKER_REGISTRY}/eventbus-app-prod:${IMAGE_TAG}
-        container_name: eventbus_node_consumer
+        container_name: eventbus_prod_event_consumer
         restart: always
         env_file:
             - .env
@@ -26,11 +26,11 @@ services:
         depends_on:
             - rabbitmq
         networks:
-            - eventbus
+            - eventbus_prod
 
     notification-consumer:
         image: ${DOCKER_REGISTRY}/eventbus-app-prod:${IMAGE_TAG}
-        container_name: eventbus_notification_consumer
+        container_name: eventbus_prod_notification_consumer
         restart: always
         env_file:
             - .env
@@ -40,11 +40,11 @@ services:
         depends_on:
             - rabbitmq
         networks:
-            - eventbus
+            - eventbus_prod
 
     mysql:
-        container_name: eventbus_mysql
         image: library/mysql:8
+        container_name: eventbus_prod_mysql
         volumes:
             - db:/var/lib/mysql
             - .docker/mysql:/docker-entrypoint-initdb.d/
@@ -60,11 +60,11 @@ services:
             - MYSQL_USER
             - MYSQL_PASSWORD
         networks:
-            - eventbus
+            - eventbus_prod
 
     rabbitmq:
-        container_name: eventbus_rabbitmq
         image: library/rabbitmq:3.8
+        container_name: eventbus_prod_rabbitmq
         restart: always
         hostname: eventbus-rmq
         volumes:
@@ -75,12 +75,12 @@ services:
             timeout: 10s
             retries: 5
         networks:
-            - eventbus
+            - eventbus_prod
 
 volumes:
     rabbitmq:
     db:
 
 networks:
-    eventbus:
+    eventbus_prod:
         driver: bridge

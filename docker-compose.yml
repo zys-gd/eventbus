@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-    node-api:
-        container_name: eventbus_node_api
+    api:
+        container_name: eventbus_api
         restart: always
         image: library/node:14
         env_file:
@@ -19,7 +19,7 @@ services:
             - eventbus
 
     event-consumer:
-        container_name: eventbus_node_consumer
+        container_name: eventbus_event_consumer
         restart: always
         image: library/node:14
         env_file:
@@ -76,11 +76,13 @@ services:
 
     rabbitmq:
         container_name: eventbus_rabbitmq
-        image: library/rabbitmq:3.8
+        image: library/rabbitmq:3.8-management
         restart: always
         hostname: eventbus-rmq
         volumes:
             - rabbitmq:/var/lib/rabbitmq/
+        ports:
+            - "15672:15672"
         healthcheck:
             test: rabbitmq-diagnostics ping >/dev/null 2>/dev/null
             interval: 10s

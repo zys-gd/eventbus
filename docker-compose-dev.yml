@@ -1,11 +1,11 @@
 version: '3.8'
 services:
     api:
-        image: ${DOCKER_REGISTRY}/eventbus-app-stage
-        container_name: eventbus_stage_api
+        image: ${DOCKER_REGISTRY}/eventbus-app-dev
+        container_name: eventbus_dev_api
         restart: always
         ports:
-            - "3020:3000"
+            - "3010:3000"
         command: npm run start:api:prod
         env_file:
             - .env
@@ -15,11 +15,11 @@ services:
             - mysql
             - rabbitmq
         networks:
-            - eventbus_stage
+            - eventbus_dev
 
     event-consumer:
-        image: ${DOCKER_REGISTRY}/eventbus-app-stage
-        container_name: eventbus_stage_event_consumer
+        image: ${DOCKER_REGISTRY}/eventbus-app-dev
+        container_name: eventbus_dev_event_consumer
         restart: always
         command: npm run start:api:prod
         env_file:
@@ -31,11 +31,11 @@ services:
             - mysql
             - rabbitmq
         networks:
-            - eventbus_stage
+            - eventbus_dev
 
     notification-consumer:
-        image: ${DOCKER_REGISTRY}/eventbus-app-stage
-        container_name: eventbus_stage_notification_consumer
+        image: ${DOCKER_REGISTRY}/eventbus-app-dev
+        container_name: eventbus_dev_notification_consumer
         restart: always
         command: npm run start:consumer:prod
         env_file:
@@ -47,11 +47,11 @@ services:
             - mysql
             - rabbitmq
         networks:
-            - eventbus_stage
+            - eventbus_dev
 
     mysql:
         image: library/mysql:8
-        container_name: eventbus_stage_mysql
+        container_name: eventbus_dev_mysql
         volumes:
             - db:/var/lib/mysql
             - .docker/mysql:/docker-entrypoint-initdb.d/
@@ -69,17 +69,17 @@ services:
             - MYSQL_ROOT_PASSWORD
             - TZ=Europe/Kiev
         networks:
-            - eventbus_stage
+            - eventbus_dev
 
     rabbitmq:
         image: library/rabbitmq:3.8-management
-        container_name: eventbus_stage_rabbitmq
+        container_name: eventbus_dev_rabbitmq
         restart: always
         hostname: eventbus-rmq
         environment:
             - TZ=Europe/Kiev
         ports:
-            - "3022:15672"
+            - "3012:15672"
         volumes:
             - rabbitmq:/var/lib/rabbitmq/
         healthcheck:
@@ -88,25 +88,25 @@ services:
             timeout: 10s
             retries: 5
         networks:
-            - eventbus_stage
+            - eventbus_dev
 
     swagger:
         image: swaggerapi/swagger-ui
-        container_name: eventbus_stage_swagger
+        container_name: eventbus_dev_swagger
         restart: always
         ports:
-            - "3021:8080"
+            - "3011:8080"
         volumes:
             - ./documentation/:/usr/share/nginx/html/documentation/
         environment:
             URLS: "[ { url: './documentation/apidoc.yml', name: 'EventBus Service' } ]"
         networks:
-            - eventbus_stage
+            - eventbus_dev
 
 volumes:
     rabbitmq:
     db:
 
 networks:
-    eventbus_stage:
+    eventbus_dev:
         driver: bridge
