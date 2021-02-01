@@ -37,7 +37,7 @@ services:
         image: ${DOCKER_REGISTRY}/eventbus-app-stage
         container_name: eventbus_notification_consumer
         restart: always
-        command: start:consumer:prod
+        command: npm run start:consumer:prod
         env_file:
             - .env
         environment:
@@ -92,7 +92,7 @@ services:
 
     apidoc:
         image: swaggerapi/swagger-ui
-        restart: on-failure
+        restart: always
         ports:
             - "3001:8080"
         volumes:
