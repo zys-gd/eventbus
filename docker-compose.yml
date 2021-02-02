@@ -1,9 +1,9 @@
 version: '3.8'
 services:
     api:
-        container_name: eventbus_api
-        restart: always
         image: library/node:14
+        container_name: eventbus_api
+        restart: on-failure
         env_file:
             - .env
         volumes:
@@ -12,55 +12,58 @@ services:
         user: node
         ports:
             - "3000:3000"
-        command: ${ENTRYPOINT_API}
+        command: npm run start:api:dev
         depends_on:
             - mysql
+            - rabbitmq
         networks:
             - eventbus
 
     event-consumer:
-        container_name: eventbus_event_consumer
-        restart: always
         image: library/node:14
+        container_name: eventbus_event_consumer
+        restart: on-failure
         env_file:
             - .env
         volumes:
             - ./:/app
         working_dir: /app
         user: node
-        command: ${ENTRYPOINT_CONSUMER}
+        command: npm run start:consumer:dev
         environment:
             - QUEUE_NAME=${EVENT_QUEUE_NAME}
         depends_on:
+            - mysql
             - rabbitmq
         networks:
             - eventbus
 
     notification-consumer:
-        container_name: eventbus_notification_consumer
-        restart: always
         image: library/node:14
+        container_name: eventbus_notification_consumer
+        restart: on-failure
         env_file:
             - .env
         volumes:
             - ./:/app
         working_dir: /app
         user: node
-        command: ${ENTRYPOINT_CONSUMER}
+        command: npm run start:consumer:dev
         environment:
             - QUEUE_NAME=${NOTIFICATION_QUEUE_NAME}
         depends_on:
+            - mysql
             - rabbitmq
         networks:
             - eventbus
 
     mysql:
-        container_name: eventbus_mysql
         image: library/mysql:8
+        container_name: eventbus_mysql
         volumes:
             - db:/var/lib/mysql
             - .docker/mysql:/docker-entrypoint-initdb.d/
-        restart: always
+        restart: on-failure
         command: --default-authentication-plugin=mysql_native_password
         healthcheck:
             test: mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} status >/dev/null 2>/dev/null
@@ -75,14 +78,12 @@ services:
             - eventbus
 
     rabbitmq:
-        container_name: eventbus_rabbitmq
         image: library/rabbitmq:3.8-management
-        restart: always
+        container_name: eventbus_rabbitmq
+        restart: on-failure
         hostname: eventbus-rmq
         volumes:
             - rabbitmq:/var/lib/rabbitmq/
-        ports:
-            - "15672:15672"
         healthcheck:
             test: rabbitmq-diagnostics ping >/dev/null 2>/dev/null
             interval: 10s
@@ -93,6 +94,7 @@ services:
 
     apidoc:
         image: swaggerapi/swagger-ui
+        container_name: eventbus_apidoc
         restart: on-failure
         ports:
             - "3001:8080"
