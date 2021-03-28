@@ -79,3 +79,7 @@ $ npm run test:cov
 - `NOTIFICATION_TRIES` _(string)_ number of attempts to send notification to subscriber's endpoint
 - `RABBITMQ_URL` _(string)_ rabbitmq connect address
 
+
+### Running migrations
+`docker-compose exec api npm run migrate:run --scripts-prepend-node-path=auto`
+
