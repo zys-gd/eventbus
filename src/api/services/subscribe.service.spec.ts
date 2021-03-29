@@ -27,7 +27,7 @@ describe('SubscribeService', () => {
         it('positive test', () => {
             const subscription: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
             const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
-            const eventType: SubscriberEntity = fixtures.getTestEventTypeEntity();
+            const eventType: EventTypeEntity = fixtures.getTestEventTypeEntity();
             const subscribeDto = dto.getTestSubscribeDto();
 
             eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
@@ -42,7 +42,7 @@ describe('SubscribeService', () => {
         it('negative test', () => {
             const subscription: SubscriptionEntity = fixtures.getTestSubscriptionEntity();
             const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
-            const eventType: SubscriberEntity = fixtures.getTestEventTypeEntity();
+            const eventType: EventTypeEntity = fixtures.getTestEventTypeEntity();
             const subscribeDto = dto.getTestSubscribeDto();
 
             eventTypeEntityRepositoryMock.findOneOrFail.resolves(eventType);
