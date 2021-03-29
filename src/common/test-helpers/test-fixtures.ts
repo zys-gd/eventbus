@@ -19,7 +19,7 @@ export class TestFixtures {
 
     public getTestSubscriberEntity(): SubscriberEntity {
         return   {
-            uuid: 'b956b71f-f866-41b9-ac35-ba75fe80ca2e',
+            id: 123,
             subscriber: 'b2c',
             apiKey: '123',
             apiSecret: 'salt',
