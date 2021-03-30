@@ -1,14 +1,16 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from 'typeorm';
 
+// noinspection JSUnusedGlobalSymbols
 export class InitialMigration1604053942583 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
             columns: [
                 {
-                    name: 'uuid',
-                    type: 'char',
-                    length: '36',
+                    name: 'id',
+                    type: 'int',
+                    generationStrategy: 'increment',
+                    isGenerated: true,
                     isPrimary: true,
                 },
                 {
@@ -29,7 +31,14 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                     name: 'api_secret',
                     type: 'varchar',
                     length: '255',
-                    isUnique: true,
+                    isUnique: false,
+                    isNullable: false,
+                },
+                {
+                    name: 'api_subscribe_secret',
+                    type: 'varchar',
+                    length: '255',
+                    isUnique: false,
                     isNullable: false,
                 },
                 {
@@ -102,8 +111,7 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                 },
                 {
                     name: 'subscriber_id',
-                    type: 'char',
-                    length: '36',
+                    type: 'int',
                     isNullable: true,
                 },
                 {
@@ -138,11 +146,12 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                     name: 'event_type_id',
                     type: 'char',
                     length: '36',
+                    isNullable: false,
                 },
                 {
                     name: 'subscriber_id',
-                    type: 'char',
-                    length: '36',
+                    type: 'int',
+                    isNullable: false,
                 },
                 {
                     name: 'notification_url',
@@ -167,13 +176,13 @@ export class InitialMigration1604053942583 implements MigrationInterface {
         }));
         await queryRunner.createForeignKey('subscriptions', new TableForeignKey({
             columnNames: ['subscriber_id'],
-            referencedColumnNames: ['uuid'],
+            referencedColumnNames: ['id'],
             referencedTableName: 'subscribers',
         }));
 
         await queryRunner.createForeignKey('event_log', new TableForeignKey({
             columnNames: ['subscriber_id'],
-            referencedColumnNames: ['uuid'],
+            referencedColumnNames: ['id'],
             referencedTableName: 'subscribers',
         }));
         await queryRunner.createForeignKey('event_log', new TableForeignKey({

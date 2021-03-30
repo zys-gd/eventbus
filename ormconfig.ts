@@ -1,3 +1,5 @@
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+
 export = {
     type: 'mysql',
     username: process.env.MYSQL_USER,
@@ -5,6 +7,7 @@ export = {
     database: process.env.MYSQL_DATABASE,
     host: process.env.MYSQL_HOST,
     port: Number(process.env.MYSQL_PORT),
+    namingStrategy: new SnakeNamingStrategy(),
     debug: false,
     synchronize: false,
     entities: [__dirname + '/src/common/entities/*.entity.ts'],

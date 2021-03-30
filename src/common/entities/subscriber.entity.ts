@@ -1,11 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SubscriptionEntity } from './subscription.entity';
 
 @Entity('subscribers')
 export class SubscriberEntity {
 
-    @PrimaryColumn('uuid')
-    uuid?: string;
+    @PrimaryGeneratedColumn()
+    id?: number;
 
     @Column()
     subscriber?: string;
@@ -15,6 +15,9 @@ export class SubscriberEntity {
 
     @Column()
     apiSecret?: string;
+
+    @Column()
+    apiSubscribeSecret?: string;
 
     @Column()
     active?: boolean;
