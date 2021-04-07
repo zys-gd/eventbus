@@ -78,7 +78,7 @@ services:
             - eventbus
 
     rabbitmq:
-        image: library/rabbitmq:3.8-management
+        build: ./.docker/rabbitmq/
         container_name: eventbus_rabbitmq
         restart: on-failure
         hostname: eventbus-rmq
