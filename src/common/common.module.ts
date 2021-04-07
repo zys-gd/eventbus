@@ -31,7 +31,7 @@ const eventbusLogger = {
             host: process.env.MYSQL_HOST,
             port: Number(process.env.MYSQL_PORT),
             debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
-            migrationsRun: process.env.MIGRATION_RUN === 'true',
+            migrationsRun: process.env.MIGRATIONS_RUN === 'true',
             synchronize: false,
             namingStrategy: new SnakeNamingStrategy(),
             entities: [
