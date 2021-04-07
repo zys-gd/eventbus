@@ -96,8 +96,8 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         const notificationDto: NotificationDto = new NotificationDto(event, tries + 1, subscription.subscriber);
 
         try {
-            const apiKey = subscription.subscriber?.apiKey;
-            const hash = await bcryptHash(String(event.data) + subscription.subscriber?.apiSubscribeSecret, 10);
+            const apiKey = String(subscription.subscriber?.apiKey);
+            const hash = await bcryptHash(String(event.data) + String(subscription.subscriber?.apiSubscribeSecret), 10);
             const response = await (this.httpService.post(
                 subscription.notificationUrl || '',
                 event.data,
