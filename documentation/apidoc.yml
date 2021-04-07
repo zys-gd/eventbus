@@ -82,7 +82,7 @@ paths:
             responses:
                 '201':
                     description: Event was posted.
-    /api/subscription/:
+    /api/subscription:
         put:
             operationId: SubscribeController_subscribeAction
             summary: Subscribe to event
@@ -123,7 +123,7 @@ paths:
                 '201':
                     description: Subscribed.
                 '404':
-                  description: Event type not found.
+                    description: Event type not found.
                 '409':
                     description: Subscription already exist.
     /api/subscription/{eventType}:
