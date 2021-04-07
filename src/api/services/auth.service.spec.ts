@@ -19,7 +19,7 @@ describe('AuthService', () => {
         it('positive test', () => {
             const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
 
-            subscriberRepositoryMock.findOneOrFail.resolves(subscriber);
+            subscriberRepositoryMock.findOne.resolves(subscriber);
             expect(authService.validateHash(
                 '123',
                 '{"eventType":"test_type","data":{"123":"test data string"}}',
@@ -31,7 +31,7 @@ describe('AuthService', () => {
     describe('validateHash', () => {
         it('negative test', () => {
 
-            subscriberRepositoryMock.findOneOrFail.resolves();
+            subscriberRepositoryMock.findOne.resolves();
             expect(authService.validateHash(
                 '123',
                 '{"eventType":"test_type","data":{"123":"test data string"}}',
@@ -44,7 +44,7 @@ describe('AuthService', () => {
         it('positive test', () => {
             const subscriber: SubscriberEntity = fixtures.getTestSubscriberEntity();
 
-            subscriberRepositoryMock.findOneOrFail.resolves(subscriber);
+            subscriberRepositoryMock.findOne.resolves(subscriber);
             expect(authService.validateApiKey(
                 '123',
                 '$2a$10$5URrVTMzyxU.KgXREgcypOHUVmXiZoibhjSFgkRsg9GBd5/U0NmZq'
@@ -54,7 +54,7 @@ describe('AuthService', () => {
 
     describe('validateApiKey', () => {
         it('negative test', () => {
-            subscriberRepositoryMock.findOneOrFail.resolves();
+            subscriberRepositoryMock.findOne.resolves();
             expect(authService.validateApiKey(
                 '123',
                 '$2a$10$5URrVTMzyxU.KgXREgcypOHUVmXiZoibhjSFgkRsg9GBd5/U0NmZq'
