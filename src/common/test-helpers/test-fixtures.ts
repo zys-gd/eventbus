@@ -23,6 +23,7 @@ export class TestFixtures {
             subscriber: 'b2c',
             apiKey: '123',
             apiSecret: 'salt',
+            apiSubscribeSecret: 'salt',
             active: true
         };
     }
