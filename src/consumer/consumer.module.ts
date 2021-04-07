@@ -13,7 +13,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
                 name: NOTIFICATION_SERVICE,
                 transport: Transport.RMQ,
                 options: {
-                    urls: [String(process.env.RABBITMQ_CONNECTION)],
+                    urls: [String(process.env.RABBITMQ_URL)],
                     queue: process.env.NOTIFICATION_QUEUE_NAME || '',
                     noAck: false,
                     persistent: true,
