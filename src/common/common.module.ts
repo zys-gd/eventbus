@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { EventEntity, EventLogEntity, EventTypeEntity, SubscriberEntity, SubscriptionEntity, } from './entities';
 import { EVENTBUS_LOGGER } from './eventbus-constants';
-import { TestDto, TestFixtures } from './test-helpers';
 
 const eventbusLogger = {
     provide: EVENTBUS_LOGGER,
@@ -32,6 +31,7 @@ const eventbusLogger = {
             host: process.env.MYSQL_HOST,
             port: Number(process.env.MYSQL_PORT),
             debug: process.env.MYSQL_DEBUG === 'true' ? ['ComQueryPacket'] : false,
+            migrationsRun: process.env.MIGRATIONS_RUN === 'true',
             synchronize: false,
             namingStrategy: new SnakeNamingStrategy(),
             entities: [
@@ -52,13 +52,9 @@ const eventbusLogger = {
     exports: [
         TypeOrmModule,
         eventbusLogger,
-        TestDto,
-        TestFixtures,
     ],
     providers: [
         eventbusLogger,
-        TestDto,
-        TestFixtures,
     ],
 })
 

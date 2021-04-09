@@ -74,6 +74,7 @@ $ npm run test:cov
 - `MYSQL_PASSWORD` _(string)_ mysql user password
 - `MYSQL_HOST` _(string)_ mysql host
 - `MYSQL_PORT` _(string)_ mysql port
+- `MIGRATIONS_RUN` _(string)_ run compiled migrations on servers start
 - `EVENT_QUEUE_NAME` _(string)_ rabbitmq queue name for publishing events
 - `NOTIFICATION_QUEUE_NAME` _(string)_ rabbitmq queue name for publishing notifications
 - `NOTIFICATION_TRIES` _(string)_ number of attempts to send notification to subscriber's endpoint

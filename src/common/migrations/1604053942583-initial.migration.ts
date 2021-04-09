@@ -54,9 +54,10 @@ export class InitialMigration1604053942583 implements MigrationInterface {
         await queryRunner.createTable(new Table({
             columns: [
                 {
-                    name: 'uuid',
-                    type: 'char',
-                    length: '36',
+                    name: 'id',
+                    type: 'int',
+                    generationStrategy: 'increment',
+                    isGenerated: true,
                     isPrimary: true,
                 },
                 {
@@ -81,9 +82,8 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                 },
                 {
                     name: 'event_type_id',
-                    type: 'varchar',
-                    length: '36',
-                    isNullable: true,
+                    type: 'int',
+                    isNullable: false,
                 },
                 {
                     name: 'data',
@@ -144,8 +144,7 @@ export class InitialMigration1604053942583 implements MigrationInterface {
                 },
                 {
                     name: 'event_type_id',
-                    type: 'char',
-                    length: '36',
+                    type: 'int',
                     isNullable: false,
                 },
                 {
@@ -171,7 +170,7 @@ export class InitialMigration1604053942583 implements MigrationInterface {
 
         await queryRunner.createForeignKey('subscriptions', new TableForeignKey({
             columnNames: ['event_type_id'],
-            referencedColumnNames: ['uuid'],
+            referencedColumnNames: ['id'],
             referencedTableName: 'event_types',
         }));
         await queryRunner.createForeignKey('subscriptions', new TableForeignKey({
@@ -193,7 +192,7 @@ export class InitialMigration1604053942583 implements MigrationInterface {
 
         await queryRunner.createForeignKey('events', new TableForeignKey({
             columnNames: ['event_type_id'],
-            referencedColumnNames: ['uuid'],
+            referencedColumnNames: ['id'],
             referencedTableName: 'event_types',
         }));
 
