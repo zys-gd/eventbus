@@ -24,7 +24,6 @@ export function deleteSubscriber (subscriber: string): Promise<DeleteResult> {
         .createQueryBuilder()
         .delete()
         .from(SubscriberEntity)
-        .where('subscriber = :subscriber', {
-            subscriber,
-        }).execute();
+        .where('subscriber = :subscriber', { subscriber })
+        .execute();
 }

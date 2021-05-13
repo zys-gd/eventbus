@@ -38,7 +38,7 @@ export class AuthService implements AuthServiceInterface {
     }
 
     private async getSubscriberByApiKey(apiKey: string): Promise<SubscriberEntity | undefined> {
-        return this.subscriberRepository.findOneOrFail({
+        return this.subscriberRepository.findOne({
             where: [
                 { apiKey, active: true },
             ]

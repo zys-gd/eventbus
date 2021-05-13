@@ -13,7 +13,7 @@ import { HashStrategy, TokenStrategy } from './strategies';
                 name: EVENT_SERVICE,
                 transport: Transport.RMQ,
                 options: {
-                    urls: [String(process.env.RABBITMQ_CONNECTION)],
+                    urls: [String(process.env.RABBITMQ_URL)],
                     queue: process.env.EVENT_QUEUE_NAME || '',
                     noAck: false,
                     persistent: true,

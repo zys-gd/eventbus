@@ -12,7 +12,7 @@ export class TestFixtures {
 
     public getTestEventTypeEntity(): EventTypeEntity {
         return   {
-            uuid: '444e7ac7-d42a-4962-a6a5-684a85cb09c5',
+            id: 123,
             name: 'test_type'
         };
     }
@@ -23,6 +23,7 @@ export class TestFixtures {
             subscriber: 'b2c',
             apiKey: '123',
             apiSecret: 'salt',
+            apiSubscribeSecret: 'salt',
             active: true
         };
     }

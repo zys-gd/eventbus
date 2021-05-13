@@ -3,6 +3,7 @@ import { Logger } from 'winston';
 import { EventNotificationServiceInterface } from './event-notification.service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { hash as bcryptHash } from 'bcrypt';
 import { ClientProxy } from '@nestjs/microservices';
 import { NotificationDto } from '../dto/notification.dto';
 import {
@@ -95,9 +96,12 @@ export class EventNotificationService implements EventNotificationServiceInterfa
         const notificationDto: NotificationDto = new NotificationDto(event, tries + 1, subscription.subscriber);
 
         try {
+            const apiKey = String(subscription.subscriber?.apiKey);
+            const hash = await bcryptHash(String(event.data) + String(subscription.subscriber?.apiSubscribeSecret), 10);
             const response = await (this.httpService.post(
                 subscription.notificationUrl || '',
                 event.data,
+                { headers: { apiKey, hash } },
             )).toPromise();
 
             if (response.status === 200) {

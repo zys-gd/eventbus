@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, HttpStatus, Inject, Param, Put, Req, Res, UseGuards } from '@nestjs/common';
+import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError'
+import { Logger } from 'winston';
 import { SubscribeDto, UnsubscribeDto } from '../dto';
 import { AuthGuard } from '@nestjs/passport';
 import { EVENTBUS_LOGGER, SubscriberEntity } from '../../common';
 import { SubscribeServiceInterface } from '../services';
-import { Logger } from 'winston';
 
 @Controller('subscription')
 export class SubscribeController {
@@ -30,6 +31,14 @@ export class SubscribeController {
             await this.subscribeService.subscribe(subscribeDto, req.user);
             res.status(HttpStatus.CREATED).send();
         } catch (e) {
+            if (e instanceof EntityNotFoundError) {
+                res.status(HttpStatus.NOT_FOUND).send({
+                    statusCode: 401,
+                    message: 'Unknown event type',
+                });
+                return;
+            }
+            this.logger.error(e.message, e);
             res.status(HttpStatus.CONFLICT).send();
         }
         this.logger.debug('Finishing SubscribeController::subscribeAction');
